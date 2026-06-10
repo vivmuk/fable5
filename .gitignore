@@ -22,6 +22,10 @@ node_modules/
 npm-debug.log*
 .env
 
+# GIF walkthrough build artifacts (regenerable via capture_gif.mjs + make_gif.py)
+frames/
+*.gif
+
 # OS / editor cruft
 Thumbs.db
 .DS_Store
