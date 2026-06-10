@@ -19,19 +19,16 @@ def font(name, size):
 F_CAP = font("segoeuib.ttf", 26)
 F_NUM = font("seguibl.ttf", 30)
 
-# caption + hold-time (ms) per frame name
+# Only these frames make the cut, in this order (intro + treasures get longer holds).
+SELECT = ["01_intro", "03_console", "05_answer", "08_mythos", "09_finale"]
+
+# caption + relative hold-weight per frame name (weights are scaled to TOTAL_MS)
 PLAN = {
-    "01_intro":      ("Meet FABLE — an interactive tale of Claude Fable 5", 3000),
-    "02_trial1":     ("Trial I — discover Fable 5's powers", 2400),
-    "03_console":    ("Play LIVE with the real Fable 5 model", 2700),
-    "04_generating": ("Ask it anything — answered live", 1600),
-    "05_answer":     ("Watch Fable 5 respond", 3000),
-    "06_treasure1":  ("Break the seal → unlock Treasure I", 2800),
-    "07_trial2":     ("Trial II — Fable vs Mythos", 2400),
-    "08_mythos":     ("Lift the veil: same model, different guardrails", 2900),
-    "09_finale":     ("Complete the tale…", 1900),
-    "10_treasures":  ("Three treasures, unsealed", 2800),
-    "11_treasures2": ("Go find the treasures yourself!", 3600),
+    "01_intro":      ("Meet FABLE — an interactive Claude Fable 5 tale", 1700),
+    "03_console":    ("Play LIVE with the real Fable 5 model", 1000),
+    "05_answer":     ("Ask it anything — answered live", 1100),
+    "08_mythos":     ("Fable vs Mythos: same model, different guardrails", 1000),
+    "09_finale":     ("Unlock 3 treasure scrolls — go find them!", 1800),
 }
 
 def caption(img, idx, text, last=False):
@@ -68,15 +65,14 @@ def caption(img, idx, text, last=False):
         ty += lh
     return img
 
-order = json.load(open(os.path.join(FR, "order.json")))
 frames, durations = [], []
-for i, name in enumerate(order, 1):
+for i, name in enumerate(SELECT, 1):
     im = Image.open(os.path.join(FR, name + ".png")).convert("RGB")
     w, h = im.size
     nh = round(h * TARGET_W / w)
     im = im.resize((TARGET_W, nh), Image.LANCZOS)
-    cap, dur = PLAN.get(name, ("", 2500))
-    caption(im, i, cap, last=(name == order[-1]))
+    cap, dur = PLAN.get(name, ("", 1200))
+    caption(im, i, cap, last=(name == SELECT[-1]))
     frames.append(im)
     durations.append(dur)
 
