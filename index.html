@@ -173,7 +173,7 @@
     .reward{margin:1.1rem 0;border-radius:var(--radius-sm);overflow:hidden;border:1.5px solid var(--gold);
       box-shadow:0 4px 18px rgba(201,150,60,.22);display:none;}
     .reward.show{display:block;animation:pop .55s ease;}
-    .reward img{width:100%;display:block;aspect-ratio:1.79/1;object-fit:cover;cursor:pointer;}
+    .reward img{width:100%;display:block;height:auto;cursor:pointer;}
     .reward-foot{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;background:var(--gold-l);}
     .reward-name{font-family:var(--ff-h);font-size:.74rem;font-weight:600;color:var(--dark);}
     .reward-dl{background:var(--orange);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:var(--ff-h);font-weight:600;font-size:.68rem;padding:.35rem .7rem;transition:background .2s;}
@@ -307,15 +307,15 @@
         <div class="s-dot"></div>
         <span class="t-mono" style="color:var(--gray-m)">FABLE 5 · LIVE · VIA VENICE</span>
       </div>
-      <p class="t-body mb2" style="font-size:.86rem">This is the <strong style="color:var(--orange)">real, live Fable 5 model</strong> — your turn to play with it. Try a use-case below that shows off one of its powers, or write your own.</p>
+      <p class="t-body mb2" style="font-size:.86rem">This is the <strong style="color:var(--orange)">real, live Fable 5 model</strong> — your turn to play with it. Ask it about itself: its new powers, how it differs from Mythos, or anything you like.</p>
 
       <div class="chip-row">
-        <span class="chip" onclick="setP(this)">🛠️ Write a Python function to find prime numbers</span>
-        <span class="chip" onclick="setP(this)">🧠 Walk me through the Monty Hall problem</span>
-        <span class="chip" onclick="setP(this)">🔬 Propose a novel hypothesis in biology</span>
-        <span class="chip" onclick="setP(this)">🏙️ Design a city 100 years from now</span>
+        <span class="chip" onclick="setP(this)">🦋 What makes you, Fable 5, special?</span>
+        <span class="chip" onclick="setP(this)">⚖️ How are you different from Claude Mythos 5?</span>
+        <span class="chip" onclick="setP(this)">✨ What can you do that older AI models couldn't?</span>
+        <span class="chip" onclick="setP(this)">📖 Why did Anthropic name you Fable?</span>
       </div>
-      <textarea id="s1in" class="txa" placeholder="Or set the Weaver a task of your own..."></textarea>
+      <textarea id="s1in" class="txa" placeholder="Or ask the Weaver anything you like..."></textarea>
 
       <div class="gen" id="s1gen">
         <div class="gen-track"><div class="gen-fill" id="genfill"></div></div>
@@ -518,9 +518,10 @@ function extractReply(data){
   const msg=data?.choices?.[0]?.message||{};
   let c=msg.content;
   if(Array.isArray(c))c=c.map(x=>typeof x==='string'?x:(x?.text||x?.content||'')).join('');
-  const reply=((c||msg.reasoning_content||'')+'').trim();
-  return reply||'The Weaver paused mid-thought. Ask once more.';
+  return ((c||msg.reasoning_content||'')+'').trim();   // '' when the safeguard returns nothing
 }
+const SAFEGUARD_MSG =
+  "✦ The Weaver drew its veil.\n\nYour question brushed against cybersecurity, biology, or chemistry — so Fable handed it to its safeguard (Claude Opus 4.8) rather than answering directly. You just witnessed Trial II live: Fable keeps the walls up for everyone, while only trusted partners get Mythos with the walls down.\n\nAsk something else — about Fable itself, code, ideas, anything — and watch it answer freely.";
 
 async function askWeaver(){
   const txt=$('s1in').value.trim();
@@ -535,7 +536,7 @@ async function askWeaver(){
       body:JSON.stringify({prompt:txt,model:_model})});
     if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Weaver could not be reached (error '+res.status+').');}
     const data=await res.json();
-    const reply=extractReply(data);
+    const reply=extractReply(data)||SAFEGUARD_MSG;
     if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
     stopGen(true);
     out.style.display='block';out.className='chat-box';
