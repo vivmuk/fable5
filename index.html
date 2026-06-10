@@ -132,7 +132,7 @@
     .chip:hover{border-color:var(--orange);background:var(--orange-l);color:var(--orange-d);}
     .chat-box{background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);
       padding:1.1rem 1.2rem;min-height:80px;font-size:.9rem;color:var(--dark);line-height:1.85;margin:1rem 0;
-      white-space:pre-wrap;word-break:break-word;display:none;}
+      white-space:normal;word-break:break-word;display:none;}
     .chat-box.typing::after{content:'|';animation:blink 1s step-end infinite;color:var(--orange);}
     @keyframes blink{50%{opacity:0}}
 
@@ -145,6 +145,39 @@
     .gen-meta{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;}
     .gen-msg{font-family:var(--ff-b);font-style:italic;font-size:.82rem;color:#3a3a37;}
     .gen-pct{font-family:var(--ff-h);font-weight:700;font-size:.95rem;color:var(--orange-d);}
+
+    /* ── LIVE FABLE 5 CONSOLE (standout) ── */
+    .live-console{margin:.4rem 0 0;border-radius:var(--radius);overflow:hidden;
+      border:2px solid transparent;
+      background:linear-gradient(var(--white),var(--white)) padding-box,
+                 linear-gradient(135deg,var(--orange),var(--blue)) border-box;
+      box-shadow:0 6px 26px rgba(217,119,87,.16);}
+    .live-head{display:flex;align-items:center;gap:.55rem;padding:.7rem 1rem;
+      background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-bottom:1px solid rgba(20,20,19,.06);}
+    .live-head .s-dot{flex:none;}
+    .live-badge{font-family:var(--ff-h);font-weight:700;font-size:.82rem;color:var(--dark);}
+    .live-badge span{color:var(--orange-d);}
+    .live-sub{margin-left:auto;font-family:var(--ff-m);font-size:.56rem;letter-spacing:.14em;color:var(--blue-d);text-transform:uppercase;white-space:nowrap;}
+    .live-body{padding:1.1rem 1.2rem;}
+    @media(max-width:520px){.live-body{padding:.9rem .9rem;}.live-badge{font-size:.74rem;}}
+
+    /* ── RENDERED MARKDOWN inside the answer ── */
+    .chat-box{animation:fadein .5s ease;}
+    @keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .chat-box p{margin:0 0 .7rem;}
+    .chat-box p:last-child{margin-bottom:0;}
+    .chat-box strong{font-family:var(--ff-h);font-weight:600;color:var(--dark);}
+    .chat-box em{font-style:italic;}
+    .chat-box h3,.chat-box h4{font-family:var(--ff-h);color:var(--orange-d);margin:.2rem 0 .5rem;line-height:1.3;}
+    .chat-box h3{font-size:1rem;font-weight:700;}
+    .chat-box h4{font-size:.9rem;font-weight:600;}
+    .chat-box ol,.chat-box ul{margin:.3rem 0 .8rem;padding-left:1.4rem;}
+    .chat-box li{margin:.32rem 0;padding-left:.2rem;line-height:1.7;}
+    .chat-box ol li::marker{color:var(--orange);font-family:var(--ff-h);font-weight:700;}
+    .chat-box ul li::marker{color:var(--blue);}
+    .chat-box code{font-family:var(--ff-m);font-size:.82em;background:var(--gray-l);border-radius:4px;padding:.05rem .3rem;color:var(--orange-d);}
+    .chat-box pre{background:#1f1f1d;color:#f0f0ec;border-radius:var(--radius-sm);padding:.85rem 1rem;overflow-x:auto;margin:.5rem 0 .8rem;}
+    .chat-box pre code{background:none;color:inherit;padding:0;font-size:.8rem;}
     .cost-panel{background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-radius:var(--radius-sm);
       padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:.9rem 0;display:none;}
     .cost-item{flex:1;min-width:92px;}
@@ -198,6 +231,10 @@
     #lb.on{display:flex;}
     #lb-img{max-width:92vw;max-height:90vh;border-radius:var(--radius-sm);box-shadow:0 8px 48px rgba(0,0,0,.4);}
     #lb-close{position:absolute;top:1rem;right:1rem;background:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px var(--shadow-m);}
+
+    .venice-credit{text-align:center;margin-top:.7rem;font-family:var(--ff-m);font-size:.66rem;letter-spacing:.1em;color:var(--gray-m);}
+    .venice-credit a{color:var(--orange-d);text-decoration:none;font-weight:600;border-bottom:1px solid var(--orange-l);transition:border-color .2s;}
+    .venice-credit a:hover{border-color:var(--orange-d);}
 
     .tc{text-align:center;}
     .mt1{margin-top:.5rem}.mt2{margin-top:1rem}.mt3{margin-top:1.5rem}
@@ -274,6 +311,7 @@
         <span>✦</span><span>Begin the Fable</span><span>✦</span>
       </button>
       <p class="t-glyph mt3" style="opacity:.35">❦ Two Trials · Three Treasures · One Legend ❦</p>
+      <p class="venice-credit">Powered by <a href="https://venice.ai/chat?ref=yN8qqI" target="_blank" rel="noopener">Venice.ai</a></p>
     </div>
   </div>
 </div>
@@ -302,39 +340,46 @@
         <div class="glint"><span class="glint-i">📊</span><span class="glint-t"><b>Reasoning</b>#1 on a senior-level finance benchmark for analysis &amp; judgment.</span></div>
       </div>
 
-      <div class="div-deco">test the weaver yourself</div>
-      <div class="oracle-status">
-        <div class="s-dot"></div>
-        <span class="t-mono" style="color:var(--gray-m)">FABLE 5 · LIVE · VIA VENICE</span>
-      </div>
-      <p class="t-body mb2" style="font-size:.86rem">This is the <strong style="color:var(--orange)">real, live Fable 5 model</strong> — your turn to play with it. Ask it about itself: its new powers, how it differs from Mythos, or anything you like.</p>
+      <div class="div-deco">now — play with the model yourself</div>
 
-      <div class="chip-row">
-        <span class="chip" onclick="setP(this)">🦋 What makes you, Fable 5, special?</span>
-        <span class="chip" onclick="setP(this)">⚖️ How are you different from Claude Mythos 5?</span>
-        <span class="chip" onclick="setP(this)">✨ What can you do that older AI models couldn't?</span>
-        <span class="chip" onclick="setP(this)">📖 Why did Anthropic name you Fable?</span>
-      </div>
-      <textarea id="s1in" class="txa" placeholder="Or ask the Weaver anything you like..."></textarea>
+      <!-- ✦ LIVE FABLE 5 CONSOLE ✦ -->
+      <div class="live-console">
+        <div class="live-head">
+          <div class="s-dot"></div>
+          <span class="live-badge">You’re talking to the <span>real Claude Fable 5</span></span>
+          <span class="live-sub">LIVE · VIA VENICE</span>
+        </div>
+        <div class="live-body">
+          <p class="t-body mb2" style="font-size:.86rem">This is the actual brand-new model — not a script. Tap a question to ask it about itself, or write your own. Every answer below is generated live.</p>
 
-      <div class="gen" id="s1gen">
-        <div class="gen-track"><div class="gen-fill" id="genfill"></div></div>
-        <div class="gen-meta"><span class="gen-msg" id="genmsg">The Weaver is weaving your answer…</span><span class="gen-pct" id="genpct">0%</span></div>
-      </div>
+          <div class="chip-row">
+            <span class="chip" onclick="setP(this)">🦋 What makes you, Fable 5, special?</span>
+            <span class="chip" onclick="setP(this)">⚖️ How are you different from Claude Mythos 5?</span>
+            <span class="chip" onclick="setP(this)">✨ What can you do that older AI models couldn't?</span>
+            <span class="chip" onclick="setP(this)">📖 Why did Anthropic name you Fable?</span>
+          </div>
+          <textarea id="s1in" class="txa" placeholder="Or ask Fable 5 anything you like..."></textarea>
 
-      <div id="s1out" class="chat-box"></div>
-      <div id="s1err" class="err"></div>
+          <div class="gen" id="s1gen">
+            <div class="gen-track"><div class="gen-fill" id="genfill"></div></div>
+            <div class="gen-meta"><span class="gen-msg" id="genmsg">Fable 5 is thinking…</span><span class="gen-pct" id="genpct">0%</span></div>
+          </div>
 
-      <div class="cost-panel" id="costp">
-        <div class="cost-item"><span class="cost-label">Input Tokens</span><span class="cost-value" id="cin">0</span></div>
-        <div class="cost-item"><span class="cost-label">Output Tokens</span><span class="cost-value" id="cout">0</span></div>
-        <div class="cost-item"><span class="cost-label">Real Cost</span><span class="cost-value hl" id="cusd">$0.000000</span></div>
-        <div class="cost-item"><span class="cost-label">Rate</span><span class="cost-value" style="font-size:.68rem">$10 in / $50 out<br>per 1M</span></div>
-      </div>
+          <div id="s1out" class="chat-box"></div>
+          <div id="s1err" class="err"></div>
 
-      <div class="rowb mt1">
-        <span class="t-mono" style="color:var(--gray-m)" id="s1hint">Ask once to break the first seal</span>
-        <button id="s1ask" class="btn btn-primary btn-icon" onclick="askWeaver()"><span>✦</span><span>Summon the Weaver</span></button>
+          <div class="cost-panel" id="costp">
+            <div class="cost-item"><span class="cost-label">Input Tokens</span><span class="cost-value" id="cin">0</span></div>
+            <div class="cost-item"><span class="cost-label">Output Tokens</span><span class="cost-value" id="cout">0</span></div>
+            <div class="cost-item"><span class="cost-label">Real Cost</span><span class="cost-value hl" id="cusd">$0.000000</span></div>
+            <div class="cost-item"><span class="cost-label">Rate</span><span class="cost-value" style="font-size:.68rem">$10 in / $50 out<br>per 1M</span></div>
+          </div>
+
+          <div class="rowb mt1">
+            <span class="t-mono" style="color:var(--gray-m)" id="s1hint">Ask once to break the first seal</span>
+            <button id="s1ask" class="btn btn-primary btn-icon" onclick="askWeaver()"><span>✦</span><span>Ask Fable 5</span></button>
+          </div>
+        </div>
       </div>
 
       <!-- Treasure 1 reveal -->
@@ -436,6 +481,7 @@
         <button class="btn btn-ghost" onclick="restart()">↺ Tell the Fable Again</button>
       </div>
       <p class="t-glyph mt3" style="opacity:.35">❦ Claude Fable 5 · Anthropic · June 2026 ❦</p>
+      <p class="venice-credit">Powered by <a href="https://venice.ai/chat?ref=yN8qqI" target="_blank" rel="noopener">Venice.ai</a></p>
     </div>
   </div>
 </div>
@@ -539,8 +585,10 @@ async function askWeaver(){
     const reply=extractReply(data)||SAFEGUARD_MSG;
     if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
     stopGen(true);
-    out.style.display='block';out.className='chat-box';
-    await typeText(out,reply);
+    await new Promise(r=>setTimeout(r,440));   // let the progress bar finish to 100%
+    out.className='chat-box';out.style.display='block';
+    out.innerHTML=mdToHtml(reply);
+    out.style.animation='none';void out.offsetHeight;out.style.animation='';  // replay fade-in
     if(!_asked){
       _asked=true;
       $('reward1').classList.add('show');
@@ -565,18 +613,46 @@ function updateCost(){
   $('cusd').textContent='$'+c.toFixed(6);
   $('costp').style.display='flex';
 }
-// Reveals the whole answer smoothly in ~2.2s regardless of length (no slow crawl, no apparent truncation).
-function typeText(el,text,totalMs=2200){
-  return new Promise(r=>{
-    const n=text.length;
-    const step=Math.max(1,Math.ceil(n/(totalMs/16)));
-    let i=0;
-    const iv=setInterval(()=>{
-      i=Math.min(n,i+step);
-      el.textContent=text.slice(0,i);
-      if(i>=n){clearInterval(iv);r();}
-    },16);
-  });
+// ── MINIMAL MARKDOWN → HTML (bold, italic, code, headings, lists, fenced code) ──
+function mdEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function mdInline(s){
+  return s
+    .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+    .replace(/(^|[^*])\*(?!\s)([^*]+?)\*/g,'$1<em>$2</em>')
+    .replace(/`([^`]+)`/g,'<code>$1</code>');
+}
+function mdBlocks(text){
+  const lines=text.split('\n');
+  let html='',listTag=null,para=[];
+  const flushP=()=>{if(para.length){html+='<p>'+mdInline(mdEsc(para.join(' ')))+'</p>';para=[];}};
+  const flushL=()=>{if(listTag){html+='</'+listTag+'>';listTag=null;}};
+  for(const raw of lines){
+    const line=raw.trim();
+    if(!line){flushP();flushL();continue;}
+    let m;
+    if(m=line.match(/^(#{1,6})\s+(.*)$/)){flushP();flushL();
+      const t=m[1].length>=3?'h4':'h3';html+='<'+t+'>'+mdInline(mdEsc(m[2]))+'</'+t+'>';continue;}
+    if(m=line.match(/^\d+\.\s+(.*)$/)){flushP();
+      if(listTag!=='ol'){flushL();listTag='ol';html+='<ol>';}
+      html+='<li>'+mdInline(mdEsc(m[1]))+'</li>';continue;}
+    if(m=line.match(/^[-*•]\s+(.*)$/)){flushP();
+      if(listTag!=='ul'){flushL();listTag='ul';html+='<ul>';}
+      html+='<li>'+mdInline(mdEsc(m[1]))+'</li>';continue;}
+    flushL();para.push(line);
+  }
+  flushP();flushL();
+  return html;
+}
+function mdToHtml(src){
+  const parts=String(src).replace(/\r/g,'').split('```');
+  let out='';
+  for(let i=0;i<parts.length;i++){
+    if(i%2===1){
+      const code=parts[i].replace(/^[a-zA-Z0-9+-]*\n/,'').replace(/\n$/,'');
+      out+='<pre><code>'+mdEsc(code)+'</code></pre>';
+    }else out+=mdBlocks(parts[i]);
+  }
+  return out;
 }
 
 function openSeal(id){const row=$(id);if(!row)return;row.classList.add('open');

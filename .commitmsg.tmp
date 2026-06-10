@@ -1,0 +1,11 @@
+Format model output as Markdown, make live section stand out, add Venice credit
+
+- Render Fable 5's replies as real Markdown (bold, italics, headings,
+  numbered/bulleted lists, inline + fenced code) instead of raw text,
+  with a fade-in; styled list markers and code blocks
+- Wrap the live interaction in a standout "live console": gradient border,
+  header bar with pulsing dot reading "You're talking to the real Claude
+  Fable 5 — LIVE · VIA VENICE", so users clearly know it's the real model
+- Add "Powered by Venice.ai" credit (referral link) to the intro and finale
+
+Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>
