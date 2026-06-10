@@ -8,6 +8,7 @@ OUT = os.path.join(HERE, "fable-walkthrough.gif")
 
 TARGET_W = 720                      # final GIF width (square input -> square output)
 BAR_H = 84                          # caption bar height (on scaled frame)
+TOTAL_MS = 3600                     # whole GIF plays in well under 4s
 ORANGE = (217, 119, 87)
 DARK = (20, 20, 19)
 
@@ -78,6 +79,11 @@ for i, name in enumerate(order, 1):
     caption(im, i, cap, last=(name == order[-1]))
     frames.append(im)
     durations.append(dur)
+
+# scale all hold-times so the whole walkthrough plays in TOTAL_MS (keeps relative pacing)
+_scale = TOTAL_MS / sum(durations)
+durations = [max(120, round(d * _scale)) for d in durations]
+print("total play time:", sum(durations), "ms across", len(durations), "frames")
 
 # uniform canvas height (max) so the GIF doesn't jitter
 maxh = max(f.height for f in frames)
