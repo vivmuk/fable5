@@ -19,7 +19,7 @@ const top = page => page.evaluate(() => window.scrollTo({ top: 0 }));
 const center = (page, sel) => page.evaluate(s => document.querySelector(s)?.scrollIntoView({ block: 'center' }), sel);
 
 const browser = await chromium.launch({ channel: 'chrome', headless: true });
-const ctx = await browser.newContext({ viewport: { width: 760, height: 1320 }, deviceScaleFactor: 2 });
+const ctx = await browser.newContext({ viewport: { width: 900, height: 900 }, deviceScaleFactor: 2 });
 const page = await ctx.newPage();
 
 console.log('navigating', URL);

@@ -6,8 +6,8 @@ HERE = os.path.dirname(__file__)
 FR = os.path.join(HERE, "frames")
 OUT = os.path.join(HERE, "fable-walkthrough.gif")
 
-TARGET_W = 600                      # final GIF width
-BAR_H = 78                          # caption bar height (on scaled frame)
+TARGET_W = 720                      # final GIF width (square input -> square output)
+BAR_H = 84                          # caption bar height (on scaled frame)
 ORANGE = (217, 119, 87)
 DARK = (20, 20, 19)
 
