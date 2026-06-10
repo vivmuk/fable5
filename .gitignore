@@ -13,6 +13,9 @@ images/info1-fable5.png
 images/info2-comparison.png
 images/info3-pricing.png
 
+# Scratch commit-message files
+.commitmsg.tmp
+
 # Node / Railway
 node_modules/
 npm-debug.log*
