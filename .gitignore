@@ -12,6 +12,11 @@ images/info1-fable5.png
 images/info2-comparison.png
 images/info3-pricing.png
 
+# Node / Railway
+node_modules/
+npm-debug.log*
+.env
+
 # OS / editor cruft
 Thumbs.db
 .DS_Store

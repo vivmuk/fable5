@@ -5,327 +5,204 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FABLE — An Interactive Tale of Claude Fable 5</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;900&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     /* ── ANTHROPIC BRAND VARIABLES ── */
     :root {
-      --cream:     #faf9f5;
-      --white:     #ffffff;
-      --dark:      #141413;
-      --gray-m:    #b0aea5;
-      --gray-l:    #e8e6dc;
-      --orange:    #d97757;
-      --orange-l:  #f5e0d4;
-      --orange-d:  #b85e3e;
-      --blue:      #6a9bcc;
-      --blue-l:    #d0e4f5;
-      --blue-d:    #4878a8;
-      --green:     #788c5d;
-      --shadow:    rgba(20,20,19,.09);
-      --shadow-m:  rgba(20,20,19,.14);
-      --shadow-lg: rgba(20,20,19,.20);
-      --radius:    14px;
-      --radius-sm: 8px;
-      --ff-h: 'Poppins', Arial, sans-serif;
-      --ff-b: 'Lora', Georgia, serif;
-      --ff-m: 'Share Tech Mono', monospace;
+      --cream:#faf9f5; --white:#ffffff; --dark:#141413;
+      --gray-m:#b0aea5; --gray-l:#e8e6dc;
+      --orange:#d97757; --orange-d:#b85e3e; --orange-l:#f5e0d4;
+      --blue:#6a9bcc; --blue-d:#4878a8; --blue-l:#dceaf7;
+      --green:#788c5d; --green-l:#e4e8da;
+      --gold:#c9963c; --gold-l:#f5ead0;
+      --shadow:rgba(20,20,19,.09); --shadow-m:rgba(20,20,19,.14);
+      --radius:14px; --radius-sm:8px;
+      --ff-h:'Poppins',Arial,sans-serif;
+      --ff-b:'Lora',Georgia,serif;
+      --ff-m:'Share Tech Mono',monospace;
     }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-
-    body {
-      background: var(--cream);
-      color: var(--dark);
-      font-family: var(--ff-b);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* subtle parchment texture */
-    body::before {
-      content:'';
-      position:fixed; inset:0;
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    body{background:var(--cream);color:var(--dark);font-family:var(--ff-b);min-height:100vh;overflow-x:hidden;}
+    body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
       background:
-        radial-gradient(ellipse at 20% 30%, rgba(217,119,87,.06) 0%, transparent 55%),
-        radial-gradient(ellipse at 80% 70%, rgba(106,155,204,.07) 0%, transparent 55%),
-        radial-gradient(ellipse at 50% 100%, rgba(120,140,93,.04) 0%, transparent 45%);
-      pointer-events:none; z-index:0;
-    }
+        radial-gradient(ellipse at 20% 25%,rgba(217,119,87,.06) 0%,transparent 55%),
+        radial-gradient(ellipse at 80% 75%,rgba(106,155,204,.07) 0%,transparent 55%),
+        radial-gradient(ellipse at 50% 100%,rgba(120,140,93,.04) 0%,transparent 45%);}
+    #cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;}
 
-    /* ── FLOATING PARTICLES CANVAS ── */
-    #cvs { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:.55; }
+    #prog{position:fixed;top:0;left:0;width:100%;height:3px;z-index:1000;background:var(--gray-l);}
+    #pf{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--blue));transition:width .8s ease;}
 
-    /* ── PROGRESS BAR ── */
-    #prog { position:fixed; top:0; left:0; width:100%; height:3px; z-index:1000; background:var(--gray-l); }
-    #pf   { height:100%; width:0%; background:linear-gradient(90deg,var(--orange),var(--blue)); transition:width .8s ease; }
+    .scr{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;}
+    .scr.on{display:flex;}
 
-    /* ── SCREEN LAYOUT ── */
-    .scr {
-      position:relative; z-index:1;
-      min-height:100vh; display:none;
-      flex-direction:column; align-items:center; justify-content:center;
-      padding:2rem 1rem;
-    }
-    .scr.on { display:flex; }
+    .card{width:100%;max-width:680px;background:var(--white);border-radius:var(--radius);
+      box-shadow:0 2px 8px var(--shadow),0 12px 40px var(--shadow-m);overflow:hidden;}
+    .card-body{padding:2rem 2.4rem 2.2rem;}
+    @media(max-width:520px){.card-body{padding:1.4rem 1.2rem;}}
 
-    /* ── CARD ── */
-    .card {
-      width:100%; max-width:680px;
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: 0 2px 8px var(--shadow), 0 12px 40px var(--shadow-m);
-      overflow: hidden;
-    }
-    .card-body { padding:2rem 2.4rem 2.2rem; }
-    @media(max-width:520px){ .card-body{ padding:1.4rem 1.2rem; } }
+    /* banner */
+    .img-banner{width:100%;height:200px;position:relative;overflow:hidden;
+      background:linear-gradient(135deg,var(--orange-l) 0%,var(--blue-l) 100%);}
+    .img-banner img{width:100%;height:100%;object-fit:cover;display:block;}
+    .img-banner .grad{position:absolute;bottom:0;left:0;right:0;height:100px;
+      background:linear-gradient(transparent,var(--white));pointer-events:none;}
+    .img-banner .banner-cap{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
+      font-family:var(--ff-m);font-size:.58rem;letter-spacing:.38em;color:rgba(20,20,19,.42);
+      white-space:nowrap;text-shadow:0 1px 3px rgba(255,255,255,.8);}
 
-    /* ── IMAGE BANNER ── */
-    .img-banner {
-      width:100%; height:200px; position:relative; overflow:hidden;
-      background:linear-gradient(135deg,var(--orange-l) 0%,var(--blue-l) 100%);
-    }
-    .img-banner img { width:100%; height:100%; object-fit:cover; display:block; }
-    .img-banner .grad {
-      position:absolute; bottom:0; left:0; right:0; height:100px;
-      background:linear-gradient(transparent, var(--white));
-      pointer-events:none;
-    }
-    .img-banner .banner-cap {
-      position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
-      font-family:var(--ff-m); font-size:.58rem; letter-spacing:.38em;
-      color:rgba(20,20,19,.42); white-space:nowrap; text-shadow:0 1px 3px rgba(255,255,255,.8);
-    }
+    /* type */
+    .t-brand{font-family:var(--ff-h);font-size:clamp(2.6rem,8vw,5rem);font-weight:900;
+      background:linear-gradient(135deg,var(--orange) 0%,var(--orange-d) 40%,var(--blue) 100%);
+      -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+      text-align:center;letter-spacing:.04em;line-height:1;}
+    .t-over{font-family:var(--ff-m);font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--orange);text-align:center;}
+    .t-h1{font-family:var(--ff-h);font-size:clamp(1.05rem,2.8vw,1.5rem);font-weight:700;color:var(--dark);text-align:center;line-height:1.3;}
+    .t-body{font-size:.92rem;color:#3a3a37;line-height:1.85;}
+    .t-tale{font-size:1.02rem;color:#2c2c29;line-height:1.95;font-style:italic;}
+    .t-tale .em{font-style:normal;font-weight:600;color:var(--orange-d);}
+    .t-tale .emb{font-style:normal;font-weight:600;color:var(--blue-d);}
+    .t-mono{font-family:var(--ff-m);font-size:.7rem;color:var(--gray-m);letter-spacing:.12em;}
+    .t-glyph{font-family:var(--ff-m);font-size:.6rem;color:var(--gray-m);letter-spacing:.32em;text-align:center;}
+    .dropcap::first-letter{font-family:var(--ff-h);font-weight:700;font-size:3.1rem;line-height:.8;
+      float:left;margin:.35rem .55rem 0 0;color:var(--orange);}
 
-    /* ── TYPOGRAPHY ── */
-    .t-brand {
-      font-family: var(--ff-h);
-      font-size: clamp(2.6rem,8vw,5rem);
-      font-weight: 900;
-      background: linear-gradient(135deg, var(--orange) 0%, var(--orange-d) 40%, var(--blue) 100%);
-      -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
-      text-align:center; letter-spacing:.04em; line-height:1;
-    }
-    .t-overtitle { font-family:var(--ff-m); font-size:.62rem; letter-spacing:.4em; text-transform:uppercase; color:var(--orange); text-align:center; }
-    .t-h1 { font-family:var(--ff-h); font-size:clamp(1rem,2.6vw,1.45rem); font-weight:700; color:var(--dark); text-align:center; line-height:1.3; }
-    .t-h2 { font-family:var(--ff-h); font-size:.95rem; font-weight:600; color:var(--dark); }
-    .t-body { font-size:.92rem; color:#3a3a37; line-height:1.82; }
-    .t-mono { font-family:var(--ff-m); font-size:.68rem; color:var(--gray-m); letter-spacing:.12em; }
-    .t-glyph{ font-family:var(--ff-m); font-size:.6rem; color:var(--gray-m); letter-spacing:.32em; text-align:center; }
+    .div{border:none;height:1px;background:var(--gray-l);margin:1.2rem 0;}
+    .div-deco{display:flex;align-items:center;gap:.8rem;margin:1.2rem 0;color:var(--gray-m);font-family:var(--ff-m);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;}
+    .div-deco::before,.div-deco::after{content:'';flex:1;height:1px;background:var(--gray-l);}
 
-    /* ── DIVIDER ── */
-    .div { border:none; height:1px; background:var(--gray-l); margin:1.2rem 0; }
-    .div-deco {
-      display:flex; align-items:center; gap:.8rem; margin:1.2rem 0;
-      color:var(--gray-m); font-family:var(--ff-m); font-size:.6rem; letter-spacing:.2em;
-    }
-    .div-deco::before,.div-deco::after { content:''; flex:1; height:1px; background:var(--gray-l); }
+    .badge{display:inline-block;padding:.1rem .52rem;border-radius:20px;font-family:var(--ff-m);font-size:.6rem;font-weight:500;letter-spacing:.05em;}
+    .badge-o{background:var(--orange-l);color:var(--orange-d);}
+    .badge-b{background:var(--blue-l);color:var(--blue-d);}
 
-    /* ── BADGES ── */
-    .badge { display:inline-block; padding:.12rem .52rem; border-radius:20px; font-family:var(--ff-m); font-size:.6rem; font-weight:500; letter-spacing:.05em; }
-    .badge-o { background:var(--orange-l); color:var(--orange-d); }
-    .badge-b { background:var(--blue-l);   color:var(--blue-d); }
-    .badge-g { background:rgba(120,140,93,.15); color:var(--green); }
+    /* buttons */
+    .btn{cursor:pointer;border:none;border-radius:var(--radius-sm);font-weight:600;transition:all .22s ease;font-family:var(--ff-h);}
+    .btn:disabled{opacity:.45;cursor:not-allowed;}
+    .btn-primary{background:var(--orange);color:#fff;padding:.85rem 2.2rem;font-size:.88rem;letter-spacing:.03em;box-shadow:0 2px 8px rgba(217,119,87,.35);}
+    .btn-primary:hover:not(:disabled){background:var(--orange-d);box-shadow:0 4px 16px rgba(217,119,87,.45);transform:translateY(-1px);}
+    .btn-blue{background:var(--blue);color:#fff;padding:.85rem 2.2rem;font-size:.88rem;letter-spacing:.03em;box-shadow:0 2px 8px rgba(106,155,204,.35);}
+    .btn-blue:hover:not(:disabled){background:var(--blue-d);box-shadow:0 4px 16px rgba(106,155,204,.45);transform:translateY(-1px);}
+    .btn-outline{background:transparent;color:var(--orange);border:1.5px solid var(--orange);padding:.65rem 1.6rem;font-size:.8rem;}
+    .btn-outline:hover:not(:disabled){background:var(--orange-l);}
+    .btn-ghost{background:transparent;color:var(--blue);border:1.5px solid var(--blue);padding:.65rem 1.6rem;font-size:.8rem;}
+    .btn-ghost:hover:not(:disabled){background:var(--blue-l);}
+    .w100{width:100%;}
+    .btn-icon{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;}
 
-    /* ── INPUTS ── */
-    .lbl { display:block; font-family:var(--ff-h); font-size:.72rem; font-weight:600; letter-spacing:.03em; color:var(--dark); margin-bottom:.4rem; }
-    .inp,.txa {
-      width:100%; background:var(--cream); border:1.5px solid var(--gray-l); border-radius:var(--radius-sm);
-      padding:.75rem 1rem; color:var(--dark); font-family:var(--ff-b); font-size:.88rem;
-      outline:none; transition:border-color .25s, box-shadow .25s;
-    }
-    .inp:focus,.txa:focus { border-color:var(--orange); box-shadow:0 0 0 3px var(--orange-l); }
-    .inp::placeholder,.txa::placeholder { color:var(--gray-m); }
-    .txa { resize:vertical; min-height:82px; line-height:1.65; }
-    .hint { font-family:var(--ff-m); font-size:.6rem; color:var(--gray-m); margin-top:.3rem; }
-    .hint a { color:var(--blue); text-decoration:none; }
-    .hint a:hover { text-decoration:underline; }
+    /* stage dots */
+    .dots{display:flex;gap:.45rem;justify-content:center;margin-bottom:1.4rem;}
+    .dot{width:8px;height:8px;border-radius:50%;background:var(--gray-l);transition:all .35s;}
+    .dot.cur{background:var(--orange);box-shadow:0 0 0 3px var(--orange-l);transform:scale(1.3);}
+    .dot.done{background:var(--green);}
 
-    /* ── BUTTONS ── */
-    .btn { cursor:pointer; border:none; border-radius:var(--radius-sm); font-weight:600; transition:all .22s ease; font-family:var(--ff-h); }
-    .btn:disabled { opacity:.45; cursor:not-allowed; }
+    /* ── SEALED TREASURE MANIFEST (minimalist) ── */
+    .manifest{margin-top:1.4rem;border:1px dashed var(--gray-l);border-radius:var(--radius-sm);padding:.4rem .2rem;background:rgba(250,249,245,.6);}
+    .seal-row{display:flex;align-items:center;gap:.85rem;padding:.7rem .9rem;border-bottom:1px solid var(--gray-l);}
+    .seal-row:last-child{border-bottom:none;}
+    .seal-ico{flex:none;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+      font-size:1rem;background:var(--gold-l);border:1.5px solid var(--gold);box-shadow:0 1px 4px rgba(201,150,60,.25);transition:all .4s;}
+    .seal-row.open .seal-ico{background:var(--green-l);border-color:var(--green);}
+    .seal-txt{flex:1;min-width:0;}
+    .seal-name{font-family:var(--ff-h);font-size:.82rem;font-weight:600;color:var(--dark);}
+    .seal-desc{font-size:.78rem;color:var(--gray-m);line-height:1.4;}
+    .seal-state{flex:none;font-family:var(--ff-m);font-size:.55rem;letter-spacing:.12em;color:var(--gold);text-transform:uppercase;}
+    .seal-row.open .seal-state{color:var(--green);}
 
-    .btn-primary {
-      background:var(--orange); color:var(--white); padding:.85rem 2.2rem;
-      font-size:.88rem; letter-spacing:.03em;
-      box-shadow:0 2px 8px rgba(217,119,87,.35);
-    }
-    .btn-primary:hover:not(:disabled) { background:var(--orange-d); box-shadow:0 4px 16px rgba(217,119,87,.45); transform:translateY(-1px); }
+    /* ── FEATURE GLINTS (myth → fact) ── */
+    .glints{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin:1.1rem 0;}
+    @media(max-width:460px){.glints{grid-template-columns:1fr;}}
+    .glint{display:flex;gap:.6rem;align-items:flex-start;background:var(--cream);border:1px solid var(--gray-l);
+      border-radius:var(--radius-sm);padding:.6rem .7rem;}
+    .glint-i{font-size:1.05rem;line-height:1.2;flex:none;}
+    .glint-t{font-size:.76rem;line-height:1.4;color:#3a3a37;}
+    .glint-t b{font-family:var(--ff-h);font-weight:600;color:var(--dark);font-size:.74rem;display:block;}
 
-    .btn-blue {
-      background:var(--blue); color:var(--white); padding:.85rem 2.2rem;
-      font-size:.88rem; letter-spacing:.03em;
-      box-shadow:0 2px 8px rgba(106,155,204,.35);
-    }
-    .btn-blue:hover:not(:disabled) { background:var(--blue-d); box-shadow:0 4px 16px rgba(106,155,204,.45); transform:translateY(-1px); }
+    /* ── LIVE ORACLE ── */
+    .oracle-status{display:flex;align-items:center;gap:.5rem;margin-bottom:.9rem;}
+    .s-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+    .lbl{display:block;font-family:var(--ff-h);font-size:.72rem;font-weight:600;color:var(--dark);margin-bottom:.4rem;}
+    .txa{width:100%;background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);
+      padding:.75rem 1rem;color:var(--dark);font-family:var(--ff-b);font-size:.88rem;outline:none;resize:vertical;min-height:74px;line-height:1.6;transition:border-color .25s,box-shadow .25s;}
+    .txa:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-l);}
+    .txa::placeholder{color:var(--gray-m);}
+    .chip-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem;}
+    .chip{background:var(--cream);border:1.5px solid var(--gray-l);border-radius:20px;padding:.3rem .8rem;
+      font-family:var(--ff-m);font-size:.64rem;color:var(--dark);cursor:pointer;transition:all .2s;}
+    .chip:hover{border-color:var(--orange);background:var(--orange-l);color:var(--orange-d);}
+    .chat-box{background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);
+      padding:1.1rem 1.2rem;min-height:80px;font-size:.9rem;color:var(--dark);line-height:1.85;margin:1rem 0;
+      white-space:pre-wrap;word-break:break-word;display:none;}
+    .chat-box.typing::after{content:'|';animation:blink 1s step-end infinite;color:var(--orange);}
+    @keyframes blink{50%{opacity:0}}
 
-    .btn-outline {
-      background:transparent; color:var(--orange); border:1.5px solid var(--orange);
-      padding:.65rem 1.6rem; font-size:.8rem; letter-spacing:.02em;
-    }
-    .btn-outline:hover:not(:disabled) { background:var(--orange-l); }
+    /* generating progress */
+    .gen{display:none;margin:1rem 0;background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);padding:1rem 1.1rem;}
+    .gen.on{display:block;}
+    .gen-track{height:9px;border-radius:6px;background:var(--gray-l);overflow:hidden;position:relative;}
+    .gen-fill{height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,var(--orange),var(--blue),var(--orange));background-size:200% 100%;animation:genslide 1.5s linear infinite;transition:width .35s ease;}
+    @keyframes genslide{0%{background-position:0% 0}100%{background-position:200% 0}}
+    .gen-meta{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;}
+    .gen-msg{font-family:var(--ff-b);font-style:italic;font-size:.82rem;color:#3a3a37;}
+    .gen-pct{font-family:var(--ff-h);font-weight:700;font-size:.95rem;color:var(--orange-d);}
+    .cost-panel{background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-radius:var(--radius-sm);
+      padding:.8rem 1rem;display:flex;flex-wrap:wrap;gap:.8rem;align-items:center;margin:.9rem 0;display:none;}
+    .cost-item{flex:1;min-width:92px;}
+    .cost-label{font-family:var(--ff-m);font-size:.55rem;letter-spacing:.14em;color:var(--dark);opacity:.6;text-transform:uppercase;display:block;}
+    .cost-value{font-family:var(--ff-h);font-size:.92rem;font-weight:700;color:var(--dark);display:block;margin-top:.12rem;}
+    .cost-value.hl{color:var(--orange-d);}
+    .rowb{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;}
 
-    .btn-ghost {
-      background:transparent; color:var(--blue); border:1.5px solid var(--blue);
-      padding:.65rem 1.6rem; font-size:.8rem; letter-spacing:.02em;
-    }
-    .btn-ghost:hover:not(:disabled) { background:var(--blue-l); }
+    /* ── VEIL TOGGLE (stage 2) ── */
+    .veil-toggle{display:flex;background:var(--cream);border:1.5px solid var(--gray-l);border-radius:30px;padding:4px;margin:.4rem 0 1rem;}
+    .veil-toggle button{flex:1;border:none;background:transparent;cursor:pointer;padding:.6rem;border-radius:26px;
+      font-family:var(--ff-h);font-weight:600;font-size:.84rem;color:var(--gray-m);transition:all .25s;}
+    .veil-toggle button.on-o{background:var(--orange);color:#fff;box-shadow:0 2px 8px rgba(217,119,87,.35);}
+    .veil-toggle button.on-b{background:var(--blue);color:#fff;box-shadow:0 2px 8px rgba(106,155,204,.35);}
+    .veil-panel{border-radius:var(--radius-sm);padding:1.1rem 1.2rem;transition:all .3s;border:1.5px solid var(--gray-l);background:var(--cream);}
+    .veil-panel.fable{border-color:var(--orange);background:linear-gradient(135deg,var(--orange-l),rgba(255,255,255,.4));}
+    .veil-panel.mythos{border-color:var(--blue);background:linear-gradient(135deg,var(--blue-l),rgba(255,255,255,.4));}
+    .veil-title{font-family:var(--ff-h);font-weight:700;font-size:1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;}
+    .veil-line{font-size:.85rem;color:#3a3a37;line-height:1.7;padding-left:1.3rem;position:relative;margin-bottom:.3rem;}
+    .veil-line::before{content:'◆';position:absolute;left:0;font-size:.6rem;top:.28rem;}
+    .veil-panel.fable .veil-line::before{color:var(--orange);}
+    .veil-panel.mythos .veil-line::before{color:var(--blue);}
+    .veil-shared{text-align:center;font-family:var(--ff-m);font-size:.66rem;color:var(--green);letter-spacing:.04em;margin-top:.9rem;padding-top:.7rem;border-top:1px dashed var(--gray-l);}
 
-    .w100 { width:100%; }
-    .btn-icon { display:inline-flex; align-items:center; gap:.5rem; }
+    /* ── TREASURE REVEAL ── */
+    .reward{margin:1.1rem 0;border-radius:var(--radius-sm);overflow:hidden;border:1.5px solid var(--gold);
+      box-shadow:0 4px 18px rgba(201,150,60,.22);display:none;}
+    .reward.show{display:block;animation:pop .55s ease;}
+    .reward img{width:100%;display:block;aspect-ratio:1.79/1;object-fit:cover;cursor:pointer;}
+    .reward-foot{display:flex;align-items:center;justify-content:space-between;padding:.55rem .75rem;background:var(--gold-l);}
+    .reward-name{font-family:var(--ff-h);font-size:.74rem;font-weight:600;color:var(--dark);}
+    .reward-dl{background:var(--orange);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:var(--ff-h);font-weight:600;font-size:.68rem;padding:.35rem .7rem;transition:background .2s;}
+    .reward-dl:hover{background:var(--orange-d);}
+    @keyframes pop{0%{transform:scale(.85);opacity:0}65%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
 
-    /* ── MATERIAL CHIP ── */
-    .chip-row { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.9rem; }
-    .chip {
-      background:var(--cream); border:1.5px solid var(--gray-l); border-radius:20px;
-      padding:.3rem .8rem; font-family:var(--ff-m); font-size:.66rem; color:var(--dark);
-      cursor:pointer; transition:all .2s;
-    }
-    .chip:hover { border-color:var(--orange); background:var(--orange-l); color:var(--orange-d); }
+    /* finale gallery */
+    .gallery{display:flex;flex-direction:column;gap:1rem;margin:1.2rem 0;}
 
-    /* ── CHAPTER DOTS ── */
-    .ch-dots { display:flex; gap:.45rem; justify-content:center; margin-bottom:1.5rem; }
-    .ch-dot  { width:8px; height:8px; border-radius:50%; background:var(--gray-l); transition:all .35s; }
-    .ch-dot.cur  { background:var(--orange); box-shadow:0 0 0 3px var(--orange-l); transform:scale(1.3); }
-    .ch-dot.done { background:var(--green); }
+    .err{background:#fef3f0;border:1.5px solid #f0b9a8;border-radius:var(--radius-sm);padding:.65rem .9rem;font-family:var(--ff-m);font-size:.68rem;color:#a84228;margin-top:.55rem;display:none;}
+    .err.on{display:block;}
+    .spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(217,119,87,.3);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;}
+    @keyframes sp{to{transform:rotate(360deg)}}
 
-    /* ── QUIZ ── */
-    .q-num  { font-family:var(--ff-m); font-size:.62rem; color:var(--gray-m); letter-spacing:.18em; margin-bottom:.8rem; }
-    .q-text { font-family:var(--ff-h); font-size:1rem; font-weight:600; color:var(--dark); line-height:1.6; margin-bottom:1.2rem; }
-    .q-grid { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin-bottom:1rem; }
-    @media(max-width:460px){ .q-grid{ grid-template-columns:1fr; } }
-    .opt {
-      background:var(--cream); border:1.5px solid var(--gray-l); border-radius:var(--radius-sm);
-      padding:.8rem .95rem; color:var(--dark); font-family:var(--ff-b); font-size:.84rem;
-      cursor:pointer; transition:all .2s; text-align:left; line-height:1.45;
-    }
-    .opt:hover:not(:disabled) { border-color:var(--orange); background:var(--orange-l); transform:translateY(-1px); }
-    .opt.ok  { border-color:var(--green); background:rgba(120,140,93,.12); color:var(--green); font-weight:500; }
-    .opt.bad { border-color:#c0392b; background:rgba(192,57,43,.08); color:#c0392b; }
-    .opt:disabled { cursor:default; }
-    .fbk {
-      background:var(--blue-l); border-left:3px solid var(--blue); border-radius:0 var(--radius-sm) var(--radius-sm) 0;
-      padding:.75rem 1rem; font-size:.84rem; color:var(--blue-d); line-height:1.65; display:none;
-    }
-    .fbk.on { display:block; }
-    .score-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.2rem; }
-    .score-badge { background:var(--orange-l); color:var(--orange-d); border-radius:20px; padding:.2rem .7rem; font-family:var(--ff-m); font-size:.68rem; font-weight:600; }
+    .cft{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:950;animation:cfall linear forwards;}
+    @keyframes cfall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
+    .bf{position:fixed;font-size:1.1rem;pointer-events:none;z-index:2;opacity:0;animation:bfrise linear infinite;}
+    @keyframes bfrise{0%{opacity:0;transform:translateY(104vh) rotate(-12deg) scale(.4)}8%{opacity:.5}92%{opacity:.2}100%{opacity:0;transform:translateY(-14vh) rotate(12deg) scale(1)}}
 
-    /* ── ORACLE / CHAT ── */
-    .oracle-status { display:flex; align-items:center; gap:.5rem; margin-bottom:1rem; }
-    .s-dot { width:7px; height:7px; border-radius:50%; background:var(--green); animation:pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.25} }
+    /* lightbox */
+    #lb{position:fixed;inset:0;background:rgba(20,20,19,.85);z-index:2000;display:none;align-items:center;justify-content:center;padding:1rem;}
+    #lb.on{display:flex;}
+    #lb-img{max-width:92vw;max-height:90vh;border-radius:var(--radius-sm);box-shadow:0 8px 48px rgba(0,0,0,.4);}
+    #lb-close{position:absolute;top:1rem;right:1rem;background:#fff;border:none;border-radius:50%;width:36px;height:36px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px var(--shadow-m);}
 
-    .chat-box {
-      background:var(--cream); border:1.5px solid var(--gray-l); border-radius:var(--radius-sm);
-      padding:1.1rem 1.2rem; min-height:90px; font-size:.88rem; color:var(--dark);
-      line-height:1.82; margin:1rem 0; white-space:pre-wrap; word-break:break-word; display:none;
-    }
-    .chat-box.typing::after { content:'|'; animation:blink 1s step-end infinite; color:var(--orange); }
-    @keyframes blink { 50%{opacity:0} }
-
-    /* ── COST TRACKER ── */
-    .cost-panel {
-      background:linear-gradient(135deg,var(--orange-l),var(--blue-l));
-      border-radius:var(--radius-sm); padding:.9rem 1.1rem;
-      display:flex; flex-wrap:wrap; gap:.8rem; align-items:center; margin:1rem 0;
-    }
-    .cost-item { flex:1; min-width:100px; }
-    .cost-label { font-family:var(--ff-m); font-size:.58rem; letter-spacing:.15em; color:var(--dark); opacity:.6; text-transform:uppercase; display:block; }
-    .cost-value { font-family:var(--ff-h); font-size:.95rem; font-weight:700; color:var(--dark); display:block; margin-top:.15rem; }
-    .cost-value.highlight { color:var(--orange-d); }
-
-    /* ── TEASER PREVIEWS ── */
-    .teaser-section {
-      background:var(--cream); border:1.5px solid var(--gray-l); border-radius:var(--radius-sm);
-      padding:1rem; margin-top:1.5rem;
-    }
-    .teaser-heading { font-family:var(--ff-h); font-size:.78rem; font-weight:600; color:var(--gray-m); text-align:center; margin-bottom:.7rem; letter-spacing:.03em; }
-    .teaser-grid { display:flex; flex-direction:column; gap:.6rem; }
-    .teaser-thumb {
-      position:relative; border-radius:var(--radius-sm); overflow:hidden;
-      aspect-ratio:1.79/1; cursor:default; background:var(--gray-l);
-    }
-    .teaser-thumb img { width:100%; height:100%; object-fit:cover; filter:blur(9px) saturate(.65) brightness(1.03); transform:scale(1.05); display:block; }
-    .teaser-lock {
-      position:absolute; inset:0; display:flex; flex-direction:row;
-      align-items:center; justify-content:center; gap:.5rem;
-      background:rgba(250,249,245,.42); backdrop-filter:blur(1.5px);
-    }
-    .teaser-lock-icon { font-size:1.4rem; filter:drop-shadow(0 1px 4px rgba(255,255,255,.8)); }
-    .teaser-lock-text { font-family:var(--ff-h); font-size:.72rem; font-weight:600; color:var(--dark); letter-spacing:.04em; text-align:left; text-shadow:0 1px 6px rgba(250,249,245,.95); }
-
-    /* ── RESULT / CHAPTER 3 ── */
-    .ring { width:110px; height:110px; border-radius:50%; background:conic-gradient(var(--orange) 0%,var(--blue) 60%,var(--green) 100%); display:flex; align-items:center; justify-content:center; margin:0 auto 1.3rem; box-shadow:0 4px 20px rgba(217,119,87,.3); }
-    .ring-in { width:88px; height:88px; border-radius:50%; background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; }
-    .ring-n { font-family:var(--ff-h); font-size:1.6rem; font-weight:900; color:var(--orange); line-height:1; }
-    .ring-s { font-family:var(--ff-m); font-size:.5rem; color:var(--gray-m); letter-spacing:.1em; }
-
-    /* ── INFOGRAPHIC GALLERY ── */
-    .info-gallery { display:flex; flex-direction:column; gap:1rem; margin:1.2rem 0; }
-    .info-card {
-      border-radius:var(--radius-sm); overflow:hidden;
-      border:1.5px solid var(--gray-l); transition:all .25s; cursor:pointer;
-      background:var(--cream);
-    }
-    .info-card:hover { border-color:var(--orange); box-shadow:0 4px 16px var(--shadow-m); transform:translateY(-2px); }
-    .info-card img { width:100%; aspect-ratio:1.79/1; object-fit:cover; display:block; }
-    .info-card-foot {
-      padding:.5rem .6rem;
-      display:flex; align-items:center; justify-content:space-between;
-    }
-    .info-card-title { font-family:var(--ff-h); font-size:.65rem; font-weight:600; color:var(--dark); }
-    .info-card-dl { background:none; border:none; cursor:pointer; color:var(--orange); font-size:.8rem; padding:.1rem .3rem; transition:color .2s; }
-    .info-card-dl:hover { color:var(--orange-d); }
-
-    /* ── LIGHTBOX ── */
-    #lb {
-      position:fixed; inset:0; background:rgba(20,20,19,.85); z-index:2000;
-      display:none; align-items:center; justify-content:center; padding:1rem;
-    }
-    #lb.on { display:flex; }
-    #lb-img { max-width:90vw; max-height:90vh; border-radius:var(--radius-sm); box-shadow:0 8px 48px rgba(0,0,0,.4); }
-    #lb-close {
-      position:absolute; top:1rem; right:1rem; background:var(--white); border:none;
-      border-radius:50%; width:36px; height:36px; font-size:1.1rem; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      box-shadow:0 2px 8px var(--shadow-m);
-    }
-
-    /* ── ERROR BOX ── */
-    .err { background:#fef3f0; border:1.5px solid #f0b9a8; border-radius:var(--radius-sm); padding:.65rem .9rem; font-family:var(--ff-m); font-size:.68rem; color:#a84228; margin-top:.55rem; display:none; }
-    .err.on { display:block; }
-
-    /* ── SPINNER ── */
-    .spin { display:inline-block; width:15px; height:15px; border:2px solid rgba(217,119,87,.3); border-top-color:var(--orange); border-radius:50%; animation:sp .7s linear infinite; vertical-align:middle; }
-    @keyframes sp { to{transform:rotate(360deg)} }
-
-    /* ── CONFETTI ── */
-    .cft { position:fixed; width:7px; height:7px; border-radius:2px; pointer-events:none; z-index:950; animation:cfall linear forwards; }
-    @keyframes cfall { 0%{opacity:1;transform:translateY(-10px) rotate(0)} 100%{opacity:0;transform:translateY(105vh) rotate(720deg)} }
-
-    /* ── BUTTERFLY ── */
-    .bf { position:fixed; font-size:1.1rem; pointer-events:none; z-index:2; opacity:0; animation:bfrise linear infinite; }
-    @keyframes bfrise { 0%{opacity:0;transform:translateY(104vh) rotate(-12deg) scale(.4)} 8%{opacity:.5} 92%{opacity:.2} 100%{opacity:0;transform:translateY(-14vh) rotate(12deg) scale(1)} }
-
-    /* ── CELEBRATE ── */
-    @keyframes pop { 0%{transform:scale(.75);opacity:0} 65%{transform:scale(1.04)} 100%{transform:scale(1);opacity:1} }
-    .pop { animation:pop .5s ease forwards; }
-
-    /* ── HELPERS ── */
-    .tc { text-align:center; }
-    .mt1{margin-top:.5rem} .mt2{margin-top:1rem} .mt3{margin-top:1.5rem}
-    .mb1{margin-bottom:.5rem} .mb2{margin-bottom:1rem}
-    .row  { display:flex; align-items:center; gap:.5rem; }
-    .rowb { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:.6rem; }
-    .feat-row { display:grid; grid-template-columns:1fr 1fr; gap:.6rem; margin:1.2rem 0; }
-    @media(max-width:380px){ .feat-row{ grid-template-columns:1fr; } }
-    .feat { background:var(--cream); border:1.5px solid var(--gray-l); border-radius:var(--radius-sm); padding:.85rem; text-align:center; }
-    .feat-i { font-size:1.3rem; display:block; margin-bottom:.2rem; }
-    .feat-l { font-family:var(--ff-m); font-size:.58rem; color:var(--gray-m); letter-spacing:.1em; text-transform:uppercase; display:block; }
-    .feat-v { font-family:var(--ff-h); font-size:.78rem; font-weight:600; color:var(--dark); margin-top:.12rem; display:block; }
-    .section-input { margin-bottom:1rem; }
+    .tc{text-align:center;}
+    .mt1{margin-top:.5rem}.mt2{margin-top:1rem}.mt3{margin-top:1.5rem}
+    .mb1{margin-bottom:.5rem}.mb2{margin-bottom:1rem}
+    .pop-card{animation:pop .5s ease forwards;}
   </style>
 </head>
 <body>
@@ -334,708 +211,419 @@
 <div id="prog"><div id="pf"></div></div>
 <div id="bflies"></div>
 
-<!-- ── LIGHTBOX ── -->
-<div id="lb">
-  <button id="lb-close" onclick="closeLB()">✕</button>
-  <img id="lb-img" alt="" />
-</div>
+<div id="lb"><button id="lb-close" onclick="closeLB()">✕</button><img id="lb-img" alt="" /></div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 0 — INTRO
-═══════════════════════════════════════════ -->
+<!-- ════════════ SCREEN 0 — THE THRESHOLD ════════════ -->
 <div id="s0" class="scr on">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-intro.png" alt="Fable 5 hero image" />
+      <img src="images/banner-intro.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CLAUDE FABLE 5 · AN INTERACTIVE LEGEND · ANTHROPIC 2026</div>
+      <div class="banner-cap">CLAUDE FABLE 5 · AN INTERACTIVE TALE</div>
     </div>
-
     <div class="card-body">
-      <p class="t-overtitle mb1">Anthropic · June 2026</p>
+      <p class="t-over mb1">Anthropic · June 2026</p>
       <div class="t-brand mb1">FABLE</div>
-      <p class="t-overtitle mb2" style="letter-spacing:.5em; font-size:.6rem">THE INTERACTIVE LEGEND</p>
+      <p class="t-over mb2" style="letter-spacing:.5em;font-size:.6rem">THAT WHICH IS TOLD</p>
 
       <p class="t-body tc mb2">
-        A new class of AI has arrived. <span class="badge badge-o">Claude Fable 5</span> is the most capable model Anthropic has ever released to the public — and this is your guided tour.
+        Anthropic wove a new kind of mind and named it <span class="badge badge-o">Fable</span> — from the Latin <em>fabula</em>, “a tale.” It is the most capable model ever opened to the public.
       </p>
-      <p class="t-body tc">
-        Journey through <strong style="color:var(--orange)">three chapters</strong> to unlock the full story. Complete the Fable and claim your legendary reward: <strong style="color:var(--blue)">three exclusive infographics</strong> revealing everything about Fable 5.
+      <p class="t-body tc mb2">
+        This is its story, told in <strong style="color:var(--orange)">two trials</strong>. Walk them both, and three sealed treasures will be yours.
+      </p>
+      <p class="t-body tc" style="background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.88rem">
+        🎮 <strong style="color:var(--orange-d)">Best part:</strong> in Trial I you’ll <strong>play live with the brand-new Fable 5 model</strong> — give it a real task and watch it work.
       </p>
 
-      <!-- TEASER PREVIEW (LOCKED) -->
-      <div class="teaser-section mt2">
-        <p class="teaser-heading">🔒 Three illustrated treasure scrolls await at journey's end</p>
-        <div class="teaser-grid">
-          <div class="teaser-thumb">
-            <img src="images/treasure1-features.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">🗺️</span><span class="teaser-lock-text">10 Key Features<br/>of Claude 5</span></div>
+      <div class="div-deco mt3">the sealed treasures</div>
+      <div class="manifest" id="manifest">
+        <div class="seal-row" id="seal0">
+          <div class="seal-ico">✦</div>
+          <div class="seal-txt">
+            <div class="seal-name">The Cartographer’s Map</div>
+            <div class="seal-desc">Ten powers of Claude 5, charted</div>
           </div>
-          <div class="teaser-thumb">
-            <img src="images/treasure2-comparison.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">⚖️</span><span class="teaser-lock-text">Fable 5 vs Mythos 5<br/>Full Breakdown</span></div>
+          <div class="seal-state">Sealed</div>
+        </div>
+        <div class="seal-row" id="seal1">
+          <div class="seal-ico">⚖</div>
+          <div class="seal-txt">
+            <div class="seal-name">The Mirror of Twins</div>
+            <div class="seal-desc">Fable &amp; Mythos, side by side</div>
           </div>
-          <div class="teaser-thumb">
-            <img src="images/treasure3-playbook.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">📖</span><span class="teaser-lock-text">The Fable<br/>Use-Case Playbook</span></div>
+          <div class="seal-state">Sealed</div>
+        </div>
+        <div class="seal-row" id="seal2">
+          <div class="seal-ico">📖</div>
+          <div class="seal-txt">
+            <div class="seal-name">The Builder’s Playbook</div>
+            <div class="seal-desc">What Fable can do in your hands</div>
           </div>
+          <div class="seal-state">Sealed</div>
         </div>
       </div>
 
-      <div class="div-deco mt3">enter your oracle key</div>
+      <div class="div-deco mt3">your oracle awaits</div>
+      <p class="t-body tc mb2" style="font-size:.84rem">
+        <span class="badge badge-o">⚡ No key needed</span><br/>
+        Powered by the living <strong style="color:var(--orange)">Fable 5</strong> model. Simply begin.
+      </p>
 
-      <div class="section-input">
-        <label class="lbl">Venice API Key</label>
-        <input id="key" type="password" class="inp" placeholder="vn-..." autocomplete="off" />
-        <p class="hint">Get one at <a href="https://venice.ai" target="_blank">venice.ai</a> · Your key stays in this page only.</p>
-      </div>
-      <div class="section-input">
-        <label class="lbl">Model ID</label>
-        <input id="mid" type="text" class="inp" value="claude-fable-5" />
-        <p class="hint">Fable 5 not yet on your account? Try <code style="font-family:var(--ff-m);color:var(--blue);font-size:.65rem">claude-opus-4-7</code></p>
-      </div>
-
-      <div id="s0e" class="err"></div>
-
-      <div class="mt3">
-        <button class="btn btn-primary w100 btn-icon" onclick="startJourney()">
-          <span>✦</span><span>Begin the Fable</span><span>✦</span>
-        </button>
-      </div>
-      <p class="t-glyph mt3" style="opacity:.35">❦ Three Chapters · One Legend · The Future of AI ❦</p>
+      <button class="btn btn-primary w100 btn-icon mt1" onclick="goStage1()">
+        <span>✦</span><span>Begin the Fable</span><span>✦</span>
+      </button>
+      <p class="t-glyph mt3" style="opacity:.35">❦ Two Trials · Three Treasures · One Legend ❦</p>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 1 — CHAPTER I: THE SCROLLS
-═══════════════════════════════════════════ -->
+<!-- ════════════ SCREEN 1 — TRIAL I: THE WEAVER OF WORLDS ════════════ -->
 <div id="s1" class="scr">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-ch1.png" alt="Chapter 1 banner" />
+      <img src="images/banner-ch1.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CHAPTER I — THE SCROLLS OF KNOWLEDGE</div>
+      <div class="banner-cap">TRIAL I — THE WEAVER OF WORLDS</div>
     </div>
-
     <div class="card-body">
-      <div class="ch-dots">
-        <div class="ch-dot cur"  id="d0"></div>
-        <div class="ch-dot"      id="d1"></div>
-        <div class="ch-dot"      id="d2"></div>
-      </div>
-      <p class="t-overtitle mb1">Chapter I</p>
-      <h1 class="t-h1 mb2">The Scrolls of Knowledge</h1>
+      <div class="dots"><div class="dot cur"></div><div class="dot"></div><div class="dot"></div></div>
+      <p class="t-over mb1">Trial the First</p>
+      <h1 class="t-h1 mb2">The Weaver of Worlds</h1>
 
-      <div class="score-row">
-        <span class="t-mono" id="qctr">SCROLL 01 OF 03</span>
-        <span class="score-badge">Score: <span id="score">0</span> / 3</span>
-      </div>
+      <p class="t-tale dropcap mb2">
+        There once woke a Weaver who could <span class="em">see</span> an entire kingdom through a single pane of glass, and win a game the old masters called unwinnable — armed with nothing but its own eyes. In one night it <span class="em">rebuilt</span> a cathedral of a million-and-fifty stones that the masons had reckoned would take two months. It held a <span class="emb">thousand thousand scrolls</span> in mind at once, learning from notes it left in its own margins — and it read the merchants’ ledgers truer than the eldest accountants in the realm.
+      </p>
 
-      <p class="q-text" id="qtext"></p>
-      <div class="q-grid" id="qopts"></div>
-      <div class="fbk"   id="qfbk"></div>
-      <div class="mt2" id="qnext" style="display:none">
-        <button class="btn btn-outline w100" id="qnbtn" onclick="nextQ()">Continue →</button>
+      <div class="glints">
+        <div class="glint"><span class="glint-i">👁️</span><span class="glint-t"><b>Vision</b>Beat Pokémon FireRed from raw screenshots alone — no maps, no helper tools.</span></div>
+        <div class="glint"><span class="glint-i">🛠️</span><span class="glint-t"><b>Software</b>Did Stripe’s 50-million-line migration in a day — months of work for a team.</span></div>
+        <div class="glint"><span class="glint-i">🧠</span><span class="glint-t"><b>Memory</b>Stays focused across millions of tokens, improving from its own notes.</span></div>
+        <div class="glint"><span class="glint-i">📊</span><span class="glint-t"><b>Reasoning</b>#1 on a senior-level finance benchmark for analysis &amp; judgment.</span></div>
       </div>
 
-      <!-- TEASER (locked, visible in ch1) -->
-      <div class="teaser-section mt3">
-        <p class="teaser-heading">🔒 Two chapters remain — your treasure scrolls await</p>
-        <div class="teaser-grid">
-          <div class="teaser-thumb">
-            <img src="images/treasure1-features.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">🗺️</span><span class="teaser-lock-text">10 Key Features<br/>of Claude 5</span></div>
-          </div>
-          <div class="teaser-thumb">
-            <img src="images/treasure2-comparison.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">⚖️</span><span class="teaser-lock-text">Fable 5 vs Mythos 5<br/>Full Breakdown</span></div>
-          </div>
-          <div class="teaser-thumb">
-            <img src="images/treasure3-playbook.png" alt="" />
-            <div class="teaser-lock"><span class="teaser-lock-icon">📖</span><span class="teaser-lock-text">The Fable<br/>Use-Case Playbook</span></div>
-          </div>
+      <div class="div-deco">test the weaver yourself</div>
+      <div class="oracle-status">
+        <div class="s-dot"></div>
+        <span class="t-mono" style="color:var(--gray-m)">FABLE 5 · LIVE · VIA VENICE</span>
+      </div>
+      <p class="t-body mb2" style="font-size:.86rem">This is the <strong style="color:var(--orange)">real, live Fable 5 model</strong> — your turn to play with it. Try a use-case below that shows off one of its powers, or write your own.</p>
+
+      <div class="chip-row">
+        <span class="chip" onclick="setP(this)">🛠️ Write a Python function to find prime numbers</span>
+        <span class="chip" onclick="setP(this)">🧠 Walk me through the Monty Hall problem</span>
+        <span class="chip" onclick="setP(this)">🔬 Propose a novel hypothesis in biology</span>
+        <span class="chip" onclick="setP(this)">🏙️ Design a city 100 years from now</span>
+      </div>
+      <textarea id="s1in" class="txa" placeholder="Or set the Weaver a task of your own..."></textarea>
+
+      <div class="gen" id="s1gen">
+        <div class="gen-track"><div class="gen-fill" id="genfill"></div></div>
+        <div class="gen-meta"><span class="gen-msg" id="genmsg">The Weaver is weaving your answer…</span><span class="gen-pct" id="genpct">0%</span></div>
+      </div>
+
+      <div id="s1out" class="chat-box"></div>
+      <div id="s1err" class="err"></div>
+
+      <div class="cost-panel" id="costp">
+        <div class="cost-item"><span class="cost-label">Input Tokens</span><span class="cost-value" id="cin">0</span></div>
+        <div class="cost-item"><span class="cost-label">Output Tokens</span><span class="cost-value" id="cout">0</span></div>
+        <div class="cost-item"><span class="cost-label">Real Cost</span><span class="cost-value hl" id="cusd">$0.000000</span></div>
+        <div class="cost-item"><span class="cost-label">Rate</span><span class="cost-value" style="font-size:.68rem">$10 in / $50 out<br>per 1M</span></div>
+      </div>
+
+      <div class="rowb mt1">
+        <span class="t-mono" style="color:var(--gray-m)" id="s1hint">Ask once to break the first seal</span>
+        <button id="s1ask" class="btn btn-primary btn-icon" onclick="askWeaver()"><span>✦</span><span>Summon the Weaver</span></button>
+      </div>
+
+      <!-- Treasure 1 reveal -->
+      <div class="reward" id="reward1">
+        <img src="images/treasure1-features.png" alt="The Cartographer's Map" onclick="openLB('images/treasure1-features.png')" />
+        <div class="reward-foot">
+          <span class="reward-name">🗺️ The Cartographer’s Map — unsealed</span>
+          <button class="reward-dl" onclick="dlImg('images/treasure1-features.png','claude5-10-key-features.png')">⬇ Download</button>
         </div>
+      </div>
+
+      <div id="s1cont" style="display:none">
+        <div class="div-deco mt2">the first seal is broken</div>
+        <button class="btn btn-blue w100 btn-icon" onclick="goStage2()"><span>✦</span><span>Enter the Second Trial</span><span>✦</span></button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 2 — CHAPTER II: THE ORACLE
-═══════════════════════════════════════════ -->
+<!-- ════════════ SCREEN 2 — TRIAL II: THE TWO MASKS ════════════ -->
 <div id="s2" class="scr">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-ch2.png" alt="Oracle chapter banner" />
+      <img src="images/banner-ch2.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CHAPTER II — SPEAK WITH THE ORACLE</div>
+      <div class="banner-cap">TRIAL II — THE TWO MASKS</div>
     </div>
-
     <div class="card-body">
-      <div class="ch-dots">
-        <div class="ch-dot done"></div>
-        <div class="ch-dot cur"></div>
-        <div class="ch-dot"></div>
-      </div>
-      <p class="t-overtitle mb1">Chapter II</p>
-      <h1 class="t-h1 mb2">Speak with the Oracle</h1>
+      <div class="dots"><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div></div>
+      <p class="t-over mb1">Trial the Second</p>
+      <h1 class="t-h1 mb2">The Two Masks</h1>
 
-      <div class="oracle-status">
-        <div class="s-dot"></div>
-        <span class="t-mono" style="color:var(--gray-m)">FABLE 5 · ORACLE ACTIVE · VENICE</span>
-      </div>
+      <p class="t-tale dropcap mb2">
+        The Weaver was so powerful that it learned to wear <span class="em">two masks</span> cut from one and the same face. One it called <span class="em">Fable</span> — the gentle mask it shows to all the world, veiling only a handful of dangerous words. The other it called <span class="emb">Mythos</span> — the bare face, revealed only to trusted guardians who defend the realm. Same soul beneath. Same worth. Only the veil is different.
+      </p>
 
-      <p class="t-body mb2">You stand before the Oracle. Ask it anything — test its wisdom, challenge its creativity. You have <strong style="color:var(--orange)">3 queries</strong>. The live cost below tracks every token spent.</p>
+      <div class="div-deco">lift the veil</div>
+      <p class="t-body mb1" style="font-size:.84rem">Turn the mask to see what each one reveals.</p>
 
-      <div class="chip-row">
-        <span class="chip" onclick="setP(this)">Write a haiku about AI consciousness</span>
-        <span class="chip" onclick="setP(this)">Explain a black hole to a 10-year-old</span>
-        <span class="chip" onclick="setP(this)">What makes Fable 5 different from all other AI?</span>
-        <span class="chip" onclick="setP(this)">Design a city 100 years from now</span>
+      <div class="veil-toggle">
+        <button id="vbF" class="on-o" onclick="setVeil('fable')">🦋 Fable</button>
+        <button id="vbM" onclick="setVeil('mythos')">🌐 Mythos</button>
       </div>
 
-      <div class="section-input">
-        <textarea id="oinput" class="txa" placeholder="Or write your own question for the Oracle..."></textarea>
+      <div class="veil-panel fable" id="veilPanel">
+        <div class="veil-title" id="veilTitle">🦋 Fable — the gentle mask</div>
+        <div id="veilLines"></div>
+        <div class="veil-shared">Same model · Same price ($10 / $50 per 1M) · The only difference is the veil</div>
       </div>
 
-      <div id="oout" class="chat-box"></div>
-      <div id="oerr" class="err"></div>
-
-      <!-- LIVE COST TRACKER -->
-      <div class="cost-panel" id="cost-panel" style="display:none">
-        <div class="cost-item">
-          <span class="cost-label">Input Tokens</span>
-          <span class="cost-value" id="c-in">0</span>
-        </div>
-        <div class="cost-item">
-          <span class="cost-label">Output Tokens</span>
-          <span class="cost-value" id="c-out">0</span>
-        </div>
-        <div class="cost-item">
-          <span class="cost-label">API Cost</span>
-          <span class="cost-value highlight" id="c-usd">$0.000000</span>
-        </div>
-        <div class="cost-item">
-          <span class="cost-label">Rate</span>
-          <span class="cost-value" style="font-size:.72rem">$10 in / $50 out<br>per 1M tokens</span>
-        </div>
+      <div id="s2cont" style="display:none">
+        <div class="div-deco mt3">both seals are ready to break</div>
+        <button class="btn btn-primary w100 btn-icon" onclick="goFinale()"><span>✦</span><span>Unseal the Treasures</span><span>✦</span></button>
       </div>
-
-      <div class="rowb mt2">
-        <span class="t-mono" style="color:var(--gray-m)">Queries left: <strong id="qleft" style="color:var(--orange)">3</strong></span>
-        <button id="askbtn" class="btn btn-primary btn-icon" onclick="askOracle()">
-          <span>✦</span><span>Consult the Oracle</span>
-        </button>
-      </div>
-
-      <div id="ocont" style="display:none">
-        <div class="div-deco mt3">the oracle has spoken</div>
-        <p class="t-body tc mb2" style="font-style:italic; color:var(--gray-m)">One more chapter awaits. Your legendary reward is near.</p>
-        <button class="btn btn-blue w100 btn-icon" onclick="goCh3()">
-          <span>✦</span><span>Reveal the Prophecy</span><span>✦</span>
-        </button>
-      </div>
+      <p class="t-mono tc mt2" id="s2hint" style="color:var(--gray-m)">Turn the mask to continue…</p>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     SCREEN 3 — CHAPTER III: THE TREASURE
-═══════════════════════════════════════════ -->
+<!-- ════════════ SCREEN 3 — THE TREASURES UNSEALED ════════════ -->
 <div id="s3" class="scr">
-  <div class="card pop tc">
+  <div class="card pop-card tc">
     <div class="img-banner">
-      <img src="images/banner-ch3.png" alt="Chapter 3 treasure banner" />
+      <img src="images/banner-ch3.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CHAPTER III — THE PROPHECY REVEALED</div>
+      <div class="banner-cap">THE TREASURES UNSEALED</div>
     </div>
-
     <div class="card-body">
-      <div class="ch-dots">
-        <div class="ch-dot done"></div>
-        <div class="ch-dot done"></div>
-        <div class="ch-dot cur"></div>
-      </div>
+      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div></div>
+      <p class="t-glyph mb2" style="color:var(--orange)">★ &nbsp; THE FABLE IS TOLD &nbsp; ★</p>
+      <h1 class="t-h1 mb2">Three Treasures, Unsealed</h1>
+      <p class="t-body mb1">You walked both trials of the Weaver. The seals are broken — these scrolls are yours to keep. Tap any to view full-size, or download.</p>
 
-      <p class="t-glyph mb2" style="color:var(--orange)">★ &nbsp; LEGEND COMPLETE &nbsp; ★</p>
-      <p class="t-overtitle mb1">Chapter III</p>
-      <h1 class="t-h1 mb2">The Prophecy Revealed</h1>
-
-      <div class="ring">
-        <div class="ring-in">
-          <span class="ring-n" id="finscore">0/3</span>
-          <span class="ring-s">WISDOM</span>
-        </div>
-      </div>
-
-      <p class="t-body mb1">Your journey through the Fable is complete. The <strong style="color:var(--orange)">Sacred Scrolls</strong> are yours — three exclusive infographics covering everything about Fable 5. Tap any image to view full-size, or download.</p>
-
-      <!-- UNLOCKED TREASURE GALLERY -->
-      <div class="div-deco mt2">your unlocked treasure scrolls</div>
-      <div class="info-gallery">
-        <div class="info-card" onclick="openLB('images/treasure1-features.png')">
-          <img src="images/treasure1-features.png" alt="10 Key Features of Claude 5" />
-          <div class="info-card-foot">
-            <span class="info-card-title">🗺️ 10 Key Features of Claude 5</span>
-            <button class="info-card-dl" onclick="event.stopPropagation();dlImg('images/treasure1-features.png','claude5-10-key-features.png')" title="Download">⬇</button>
+      <div class="gallery">
+        <div class="reward show" style="margin:0">
+          <img src="images/treasure1-features.png" alt="" onclick="openLB('images/treasure1-features.png')" />
+          <div class="reward-foot">
+            <span class="reward-name">🗺️ The Cartographer’s Map — 10 Key Features</span>
+            <button class="reward-dl" onclick="dlImg('images/treasure1-features.png','claude5-10-key-features.png')">⬇ Download</button>
           </div>
         </div>
-        <div class="info-card" onclick="openLB('images/treasure2-comparison.png')">
-          <img src="images/treasure2-comparison.png" alt="Fable 5 vs Mythos 5 Breakdown" />
-          <div class="info-card-foot">
-            <span class="info-card-title">⚖️ Fable 5 vs Mythos 5 — Full Breakdown</span>
-            <button class="info-card-dl" onclick="event.stopPropagation();dlImg('images/treasure2-comparison.png','fable-vs-mythos-breakdown.png')" title="Download">⬇</button>
+        <div class="reward show" style="margin:0">
+          <img src="images/treasure2-comparison.png" alt="" onclick="openLB('images/treasure2-comparison.png')" />
+          <div class="reward-foot">
+            <span class="reward-name">⚖️ The Mirror of Twins — Fable vs Mythos</span>
+            <button class="reward-dl" onclick="dlImg('images/treasure2-comparison.png','fable-vs-mythos-breakdown.png')">⬇ Download</button>
           </div>
         </div>
-        <div class="info-card" onclick="openLB('images/treasure3-playbook.png')">
-          <img src="images/treasure3-playbook.png" alt="The Fable Use-Case Playbook" />
-          <div class="info-card-foot">
-            <span class="info-card-title">📖 The Fable Use-Case Playbook</span>
-            <button class="info-card-dl" onclick="event.stopPropagation();dlImg('images/treasure3-playbook.png','fable-use-case-playbook.png')" title="Download">⬇</button>
+        <div class="reward show" style="margin:0">
+          <img src="images/treasure3-playbook.png" alt="" onclick="openLB('images/treasure3-playbook.png')" />
+          <div class="reward-foot">
+            <span class="reward-name">📖 The Builder’s Playbook — Use Cases</span>
+            <button class="reward-dl" onclick="dlImg('images/treasure3-playbook.png','fable-use-case-playbook.png')">⬇ Download</button>
           </div>
         </div>
       </div>
 
-      <!-- QUICK STATS GRID -->
-      <div class="feat-row mt1">
-        <div class="feat"><span class="feat-i">🦋</span><span class="feat-l">Fable 5</span><span class="feat-v">Public · Safeguarded</span></div>
-        <div class="feat"><span class="feat-i">🌐</span><span class="feat-l">Mythos 5</span><span class="feat-v">Trusted · Unrestricted</span></div>
-        <div class="feat"><span class="feat-i">💰</span><span class="feat-l">Input Price</span><span class="feat-v">$10 / 1M tokens</span></div>
-        <div class="feat"><span class="feat-i">💎</span><span class="feat-l">Output Price</span><span class="feat-v">$50 / 1M tokens</span></div>
-      </div>
-
-      <div class="div-deco mt2">full comparison pdf</div>
-
-      <button id="pdfbtn" class="btn btn-primary w100 btn-icon" onclick="makePDF()" style="font-size:.9rem;">
-        <span>📄</span><span>Download Comparison PDF</span>
-      </button>
-      <p id="pdfmsg" class="t-mono mt1" style="display:none"></p>
-
-      <div class="mt3">
-        <button class="btn btn-ghost" onclick="restart()">↺ Begin the Fable Again</button>
+      <div class="mt2">
+        <button class="btn btn-ghost" onclick="restart()">↺ Tell the Fable Again</button>
       </div>
       <p class="t-glyph mt3" style="opacity:.35">❦ Claude Fable 5 · Anthropic · June 2026 ❦</p>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════
-     JAVASCRIPT
-═══════════════════════════════════════════ -->
 <script>
 'use strict';
 
-// ── STATE ─────────────────────────────────────────────────────
-let _key = '', _model = 'claude-fable-5';
-let _score = 0, _qIdx = 0, _left = 3;
-let _totalIn = 0, _totalOut = 0;
-const IN_PPT  = 10 / 1_000_000;   // $0.000010 per input token
-const OUT_PPT = 50 / 1_000_000;   // $0.000050 per output token
+// ── STATE ──
+let _model='claude-fable-5';
+let _totalIn=0,_totalOut=0,_asked=false,_veilTouched=false;
+const IN_PPT=10/1_000_000, OUT_PPT=50/1_000_000;
 
-// ── QUIZ DATA ─────────────────────────────────────────────────
-const Qs = [
-  {
-    q: 'Which classic video game did Claude Fable 5 complete using ONLY raw screenshots — no maps, no helper tools?',
-    opts: ['Tetris Classic', 'Pokemon FireRed', 'Super Mario Odyssey', 'Minecraft'],
-    ans: 1,
-    why: 'Fable 5 beat Pokemon FireRed with a minimal, vision-only harness. Earlier Claude models needed a complex helper harness to make any progress — Fable needed none.'
-  },
-  {
-    q: 'In Stripe\'s 50-million-line Ruby codebase, how long did Fable 5 take to complete a full codebase-wide migration that would have taken a whole team over two months?',
-    opts: ['One week', 'One month', 'One day', 'Three days'],
-    ans: 2,
-    why: 'Stripe reported that Fable 5 compressed months of engineering into days — completing the migration in a single day. This is exactly where Fable 5\'s lead over other models grows largest: the longer and more complex the task.'
-  },
-  {
-    q: 'Fable 5 and Mythos 5 are built on different underlying AI models, which is why Mythos has stronger capabilities. True or False?',
-    opts: [
-      'True — Mythos uses a bigger model',
-      'True — Fable is the consumer version',
-      'False — they share the exact same model at the same price',
-      'False — Mythos is actually older'
-    ],
-    ans: 2,
-    why: 'Both share the exact same underlying AI model. The only difference is safeguards: Fable has conservative classifiers for public safety; Mythos lifts them for trusted partners. Both cost $10 input / $50 output per million tokens.'
-  }
-];
+const $=id=>document.getElementById(id);
+const px=p=>{$('pf').style.width=p+'%';};
+function showScreen(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);}
 
-// ── CANVAS (warm light particles) ────────────────────────────
-(function() {
-  const cv = document.getElementById('cvs');
-  const cx = cv.getContext('2d');
-  let W, H, pts = [];
-
-  function resize() {
-    W = cv.width  = window.innerWidth;
-    H = cv.height = window.innerHeight;
-    pts = [];
-    for (let i = 0; i < 50; i++) {
-      pts.push({
-        x: Math.random()*W, y: Math.random()*H,
-        r: Math.random()*3+1,
-        vx: (Math.random()-.5)*.3, vy: -(Math.random()*.3+.1),
-        a: Math.random()*Math.PI*2, as: Math.random()*.015+.003,
-        col: Math.random() > .5 ? '#d97757' : '#6a9bcc'
-      });
-    }
-  }
-
-  function frame() {
-    cx.clearRect(0,0,W,H);
-    pts.forEach(p => {
-      p.a += p.as; p.x += p.vx; p.y += p.vy;
-      if (p.y < -8) { p.y = H+8; p.x = Math.random()*W; }
-      if (p.x < -8) p.x = W+8;
-      if (p.x > W+8) p.x = -8;
-      const alpha = .12 + .18*Math.abs(Math.sin(p.a));
-      cx.globalAlpha = alpha;
-      cx.beginPath(); cx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-      cx.fillStyle = p.col; cx.fill();
-      cx.globalAlpha = 1;
-    });
-    requestAnimationFrame(frame);
-  }
-  resize(); frame();
-  window.addEventListener('resize', resize);
+// ── CANVAS PARTICLES ──
+(function(){
+  const cv=$('cvs'),cx=cv.getContext('2d');let W,H,pts=[];
+  function resize(){W=cv.width=innerWidth;H=cv.height=innerHeight;pts=[];
+    for(let i=0;i<48;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*3+1,
+      vx:(Math.random()-.5)*.3,vy:-(Math.random()*.3+.1),a:Math.random()*6.28,as:Math.random()*.015+.003,
+      col:Math.random()>.5?'#d97757':'#6a9bcc'});}
+  function frame(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.a+=p.as;p.x+=p.vx;p.y+=p.vy;
+    if(p.y<-8){p.y=H+8;p.x=Math.random()*W;}if(p.x<-8)p.x=W+8;if(p.x>W+8)p.x=-8;
+    cx.globalAlpha=.12+.18*Math.abs(Math.sin(p.a));cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);
+    cx.fillStyle=p.col;cx.fill();cx.globalAlpha=1;});requestAnimationFrame(frame);}
+  resize();frame();addEventListener('resize',resize);
 })();
 
-// ── BUTTERFLIES ───────────────────────────────────────────────
-function spawnBf() {
-  const el = document.createElement('div');
-  el.className='bf'; el.textContent='🦋';
-  el.style.left=(8+Math.random()*84)+'vw';
-  el.style.fontSize=(.55+Math.random()*.6)+'rem';
-  const d=12+Math.random()*14;
-  el.style.animationDuration=d+'s';
-  el.style.animationDelay=(Math.random()*2)+'s';
-  document.getElementById('bflies').appendChild(el);
-  setTimeout(()=>el.remove(),(d+3)*1000);
-}
-spawnBf(); setInterval(spawnBf, 3500);
+// ── BUTTERFLIES ──
+function spawnBf(){const el=document.createElement('div');el.className='bf';el.textContent='🦋';
+  el.style.left=(8+Math.random()*84)+'vw';el.style.fontSize=(.55+Math.random()*.6)+'rem';
+  const d=12+Math.random()*14;el.style.animationDuration=d+'s';el.style.animationDelay=(Math.random()*2)+'s';
+  $('bflies').appendChild(el);setTimeout(()=>el.remove(),(d+3)*1000);}
+spawnBf();setInterval(spawnBf,3500);
 
-// ── HELPERS ───────────────────────────────────────────────────
-const $ = id => document.getElementById(id);
-const px = p => { $('pf').style.width=p+'%'; };
-function showScreen(id) {
-  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
-  $(id).classList.add('on'); window.scrollTo(0,0);
-}
+// ── CONFETTI ──
+function confetti(){const cols=['#d97757','#6a9bcc','#788c5d','#c9963c','#f5e0d4','#dceaf7'];
+  for(let i=0;i<70;i++)setTimeout(()=>{const el=document.createElement('div');el.className='cft';
+    el.style.left=Math.random()*100+'vw';el.style.background=cols[Math.floor(Math.random()*cols.length)];
+    el.style.animationDuration=(1.4+Math.random()*2.2)+'s';el.style.animationDelay=Math.random()*.6+'s';
+    if(Math.random()>.5)el.style.borderRadius='50%';document.body.appendChild(el);setTimeout(()=>el.remove(),5000);},i*25);}
 
-// ── CONFETTI ──────────────────────────────────────────────────
-function confetti() {
-  const cols=['#d97757','#6a9bcc','#788c5d','#fbbf24','#f5e0d4','#d0e4f5'];
-  for(let i=0;i<70;i++) setTimeout(()=>{
-    const el=document.createElement('div');
-    el.className='cft';
-    el.style.left=Math.random()*100+'vw';
-    el.style.background=cols[Math.floor(Math.random()*cols.length)];
-    el.style.animationDuration=(1.4+Math.random()*2.2)+'s';
-    el.style.animationDelay=Math.random()*.6+'s';
-    if(Math.random()>.5) el.style.borderRadius='50%';
-    document.body.appendChild(el); setTimeout(()=>el.remove(),5000);
-  },i*25);
-}
-
-// ── INTRO ─────────────────────────────────────────────────────
-function startJourney() {
-  const k=$('key').value.trim();
-  const m=$('mid').value.trim()||'claude-fable-5';
-  const eb=$('s0e');
-  if(!k){eb.textContent='⚠ Enter your Venice API key to begin.';eb.classList.add('on');return;}
-  _key=k; _model=m; eb.classList.remove('on');
-  px(10); showScreen('s1'); loadQ(0);
-}
-
-// ── CHAPTER I ─────────────────────────────────────────────────
-function loadQ(i) {
-  _qIdx=i;
-  const q=Qs[i];
-  $('qctr').textContent='SCROLL '+String(i+1).padStart(2,'0')+' OF '+String(Qs.length).padStart(2,'0');
-  $('qtext').textContent=q.q;
-  $('qfbk').classList.remove('on');
-  $('qnext').style.display='none';
-  const grid=$('qopts'); grid.innerHTML='';
-  q.opts.forEach((o,idx)=>{
-    const b=document.createElement('button');
-    b.className='opt'; b.textContent=o;
-    b.onclick=()=>pick(idx);
-    grid.appendChild(b);
-  });
-  px(10+(i/Qs.length)*28);
-}
-
-function pick(idx) {
-  const q=Qs[_qIdx];
-  const btns=document.querySelectorAll('.opt');
-  btns.forEach(b=>b.disabled=true);
-  if(idx===q.ans){btns[idx].classList.add('ok');_score++;$('score').textContent=_score;}
-  else{btns[idx].classList.add('bad');btns[q.ans].classList.add('ok');}
-  const fb=$('qfbk');
-  fb.textContent=(idx===q.ans?'✦  ':'○  ')+q.why;
-  fb.classList.add('on');
-  $('qnext').style.display='block';
-  if(_qIdx===Qs.length-1){$('qnbtn').textContent="Enter the Oracle's Chamber →";$('qnbtn').onclick=goCh2;}
-}
-
-function nextQ(){if(_qIdx<Qs.length-1)loadQ(_qIdx+1);}
-
-// ── CHAPTER II ────────────────────────────────────────────────
-function goCh2(){px(45);showScreen('s2');}
-function setP(el){$('oinput').value=el.textContent;}
-
-async function askOracle() {
-  const txt=$('oinput').value.trim();
-  const err=$('oerr');const btn=$('askbtn');const out=$('oout');
-  if(!txt){err.textContent='⚠ Ask the Oracle something first.';err.classList.add('on');return;}
-  if(_left<=0){err.textContent='⚠ No queries remain. Continue below.';err.classList.add('on');return;}
-  err.classList.remove('on');
-  btn.disabled=true;
-  btn.innerHTML='<span class="spin"></span> &nbsp;Consulting…';
-  out.style.display='block';out.className='chat-box typing';out.textContent='';
-
-  try {
-    const res=await fetch('https://api.venice.ai/api/v1/chat/completions',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Authorization':'Bearer '+_key},
-      body:JSON.stringify({
-        model:_model,
-        messages:[
-          {role:'system',content:'You are Claude Fable 5, Anthropic\'s most capable model released to the public on June 9, 2026. You are inside an interactive experience. Be engaging, insightful, and demonstrate deep reasoning and creativity. Respond in 3–5 sentences unless more depth is needed.'},
-          {role:'user',content:txt}
-        ],
-        max_tokens:450,stream:false
-      })
-    });
-
-    if(!res.ok){
-      const body=await res.json().catch(()=>({}));
-      throw new Error(body?.error?.message||'API error '+res.status+' — try "claude-opus-4-7" if Fable 5 is unavailable');
-    }
-
-    const data=await res.json();
-    const reply=data?.choices?.[0]?.message?.content||'The Oracle is silent.';
-
-    // Update cost tracker
-    if(data.usage){
-      _totalIn  += data.usage.prompt_tokens     || 0;
-      _totalOut += data.usage.completion_tokens  || 0;
-      updateCost();
-    }
-
-    out.className='chat-box';
-    await typeText(out,reply,11);
-    _left--;$('qleft').textContent=_left;
-    if(_left<=0){btn.textContent='✦ Oracle Consulted';}
-    $('ocont').style.display='block';
-    px(55+((3-_left)/3)*22);
-
-  } catch(e) {
-    out.style.display='none';out.className='chat-box';
-    err.textContent='⚠ '+(e.message||'Connection failed. Check your API key and model ID.');
-    err.classList.add('on');
-    $('ocont').style.display='block';
-  } finally {
-    if(_left>0){btn.disabled=false;btn.innerHTML='<span>✦</span><span>Consult the Oracle</span>';}
-  }
-}
-
-function updateCost() {
-  const cost=(_totalIn*IN_PPT)+(_totalOut*OUT_PPT);
-  $('c-in').textContent  = _totalIn.toLocaleString();
-  $('c-out').textContent = _totalOut.toLocaleString();
-  $('c-usd').textContent = '$'+cost.toFixed(6);
-  $('cost-panel').style.display='flex';
-}
-
-function typeText(el,text,ms=12){
-  return new Promise(resolve=>{
-    let i=0;
-    const iv=setInterval(()=>{
-      el.textContent+=text[i++];
-      if(i>=text.length){clearInterval(iv);resolve();}
-    },ms);
-  });
-}
-
-// ── CHAPTER III ───────────────────────────────────────────────
-function goCh3(){
-  px(92);
-  $('finscore').textContent=_score+'/3';
-  showScreen('s3');
-  confetti();
-  for(let i=0;i<5;i++)setTimeout(spawnBf,i*400);
-}
-
-// ── LIGHTBOX ──────────────────────────────────────────────────
+// ── LIGHTBOX / DOWNLOAD ──
 function openLB(src){$('lb-img').src=src;$('lb').classList.add('on');}
 function closeLB(){$('lb').classList.remove('on');}
-document.getElementById('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLB();});
+$('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLB();});
+function dlImg(src,name){const a=document.createElement('a');a.href=src;a.download=name;a.click();}
 
-// ── IMAGE DOWNLOAD ────────────────────────────────────────────
-function dlImg(src,name){
-  const a=document.createElement('a');
-  a.href=src;a.download=name;a.click();
+// ── NAV ──
+function goStage1(){px(20);showScreen('s1');}
+function goStage2(){px(62);showScreen('s2');setVeil('fable');}
+function goFinale(){px(100);showScreen('s3');confetti();for(let i=0;i<5;i++)setTimeout(spawnBf,i*400);}
+
+// ── TRIAL I: LIVE WEAVER ──
+function setP(el){$('s1in').value=el.textContent;}
+
+let _genIv=null;
+function startGen(){
+  const g=$('s1gen');g.classList.add('on');
+  let pct=0;$('genfill').style.width='0%';$('genpct').textContent='0%';
+  $('genmsg').textContent='The Weaver is weaving your answer…';
+  _genIv=setInterval(()=>{
+    pct+=Math.max(0.5,(93-pct)*0.07);   // ease toward ~93%
+    if(pct>93)pct=93;
+    $('genfill').style.width=pct.toFixed(0)+'%';
+    $('genpct').textContent=pct.toFixed(0)+'%';
+  },170);
+}
+function stopGen(done){
+  if(_genIv){clearInterval(_genIv);_genIv=null;}
+  if(done){
+    $('genfill').style.width='100%';$('genpct').textContent='100%';$('genmsg').textContent='The tale is told ✦';
+    setTimeout(()=>$('s1gen').classList.remove('on'),420);
+  }else $('s1gen').classList.remove('on');
 }
 
-// ── PDF GENERATION ────────────────────────────────────────────
-async function makePDF() {
-  const btn=$('pdfbtn'),msg=$('pdfmsg');
-  btn.disabled=true;btn.textContent='⏳ Generating PDF…';
-  msg.style.display='block';msg.textContent='Building…';msg.style.color='var(--gray-m)';
+function extractReply(data){
+  const msg=data?.choices?.[0]?.message||{};
+  let c=msg.content;
+  if(Array.isArray(c))c=c.map(x=>typeof x==='string'?x:(x?.text||x?.content||'')).join('');
+  const reply=((c||msg.reasoning_content||'')+'').trim();
+  return reply||'The Weaver paused mid-thought. Ask once more.';
+}
 
-  try {
-    const {jsPDF}=window.jspdf;
-    const doc=new jsPDF({orientation:'landscape',unit:'mm',format:'a4'});
-    const W=297,H=210;
-
-    // BG — cream
-    doc.setFillColor(250,249,245); doc.rect(0,0,W,H,'F');
-
-    // subtle tint blobs
-    pBlob(doc,50,50,80,[217,119,87],.09);
-    pBlob(doc,240,160,70,[106,155,204],.09);
-
-    // Top bar gradient
-    pGradLine(doc,0,8,W,[217,119,87],[106,155,204]);
-
-    // Title
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(26); doc.setTextColor(217,119,87);
-    doc.text('FABLE 5', W/2-12, 23, {align:'center'});
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(9); doc.setTextColor(106,155,204);
-    doc.text('vs', W/2, 29.5, {align:'center'});
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(26); doc.setTextColor(106,155,204);
-    doc.text('MYTHOS 5', W/2+12, 39, {align:'center'});
-
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(6.5); doc.setTextColor(176,174,165);
-    doc.text("THE COMPLETE GUIDE TO ANTHROPIC'S MOST POWERFUL MODELS  |  JUNE 2026",W/2,46,{align:'center'});
-
-    // Divider
-    pGradLine(doc,18,50.5,W-18,[217,119,87],[106,155,204]);
-
-    // Core truth banner
-    doc.setFillColor(245,224,212); doc.roundedRect(18,54,W-36,12,3,3,'F');
-    doc.setDrawColor(217,119,87); doc.setLineWidth(.4); doc.roundedRect(18,54,W-36,12,3,3,'S');
-    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(184,94,62);
-    doc.text('*  CORE TRUTH: FABLE 5 AND MYTHOS 5 SHARE THE EXACT SAME UNDERLYING AI MODEL  *',W/2,61.5,{align:'center'});
-
-    // Columns
-    const CW=(W-52)/2,C1=15,C2=W/2+11,CY=74;
-    pColHead(doc,C1,CY,CW,[250,245,235],[217,119,87],[184,94,62],'FABLE 5','GENERAL PUBLIC ACCESS');
-    pColHead(doc,C2,CY,CW,[240,244,250],[106,155,204],[72,120,168],'MYTHOS 5','RESTRICTED TRUSTED ACCESS');
-
-    const rows=[
-      {l:'ACCESS LEVEL',       fv:'General Public — Everyone',                         fc:[120,140,93],mv:'Glasswing Partners + Select Researchers',   mc:[217,119,87]},
-      {l:'CYBER SAFEGUARDS',   fv:'Active — falls back to Opus 4.8 (< 5% of sessions)',fc:[217,119,87],mv:'LIFTED — Full capabilities unlocked',        mc:[106,155,204]},
-      {l:'BIOLOGY / CHEMISTRY',fv:'Conservative classifiers active',                   fc:[217,119,87],mv:'Can be lifted for trusted researchers',      mc:[106,155,204]},
-      {l:'DISTILLATION GUARD', fv:'Active — blocks bulk extraction',                   fc:[217,119,87],mv:'Managed via program terms',                  mc:[176,174,165]},
-      {l:'API MODEL ID',       fv:'claude-fable-5  (public)',                          fc:[106,155,204],mv:'Restricted — not publicly available',       mc:[176,174,165]},
-      {l:'PRICING',            fv:'$10 input  /  $50 output  per 1M tokens',           fc:[120,140,93], mv:'$10 input  /  $50 output  per 1M tokens',   mc:[120,140,93]},
-      {l:'KEY USE CASES',      fv:'Developers · Business · Creative · Research',       fc:[176,174,165],mv:'Cyber Defense · Biomedical R&D · Infrastructure',mc:[106,155,204]},
-    ];
-
-    let ry=CY+17;const RH=13;
-    rows.forEach((r,i)=>{
-      doc.setFillColor(...(i%2===0?[250,248,244]:[245,243,238]));
-      doc.rect(C1-3,ry,W-24,RH,'F');
-      doc.setFont('helvetica','bold');doc.setFontSize(5.5);doc.setTextColor(176,174,165);
-      doc.text(r.l,W/2,ry+4.5,{align:'center'});
-      doc.setFont('helvetica','normal');doc.setFontSize(6.8);
-      doc.setTextColor(...r.fc);
-      const fl=doc.splitTextToSize(r.fv,CW-4);
-      doc.text(fl,C1+CW/2,ry+(fl.length>1?7.2:8.5),{align:'center'});
-      doc.setTextColor(...r.mc);
-      const ml=doc.splitTextToSize(r.mv,CW-4);
-      doc.text(ml,C2+CW/2,ry+(ml.length>1?7.2:8.5),{align:'center'});
-      doc.setDrawColor(232,230,220);doc.setLineWidth(.2);
-      doc.line(C1-3,ry+RH,C1-3+W-24,ry+RH);
-      ry+=RH;
-    });
-
-    // Shared capabilities
-    const capY=ry+7;
-    doc.setFont('helvetica','bold');doc.setFontSize(6.5);doc.setTextColor(106,155,204);
-    doc.text('*  SHARED CAPABILITIES — BOTH MODELS ARE EQUALLY POWERFUL  *',W/2,capY,{align:'center'});
-
-    const caps=[
-      {s:'</>',l:'Software Eng.',d:'State-of-the-art'},
-      {s:'[O]',l:'Vision',d:'Best in class'},
-      {s:'DNA',l:'Life Sciences',d:'Drug design + hypotheses'},
-      {s:'$$$',l:'Knowledge Work',d:'#1 Finance Benchmark'},
-      {s:'~~~',l:'Long Context',d:'Millions of tokens'},
-      {s:'>_<',l:'Autonomous Tasks',d:'Code + games + research'},
-    ];
-    const CIW=(W-28)/caps.length;
-    caps.forEach((c,i)=>{
-      const cx=14+i*CIW+CIW/2,cy=capY+6;
-      doc.setFillColor(245,243,238);doc.roundedRect(14+i*CIW,cy-2,CIW-2,16,2,2,'F');
-      doc.setFont('courier','bold');doc.setFontSize(7);doc.setTextColor(217,119,87);
-      doc.text(c.s,cx,cy+3.5,{align:'center'});
-      doc.setFont('helvetica','bold');doc.setFontSize(5.5);doc.setTextColor(20,20,19);
-      doc.text(c.l,cx,cy+8,{align:'center'});
-      doc.setFont('helvetica','normal');doc.setFontSize(5);doc.setTextColor(176,174,165);
-      doc.text(c.d,cx,cy+12,{align:'center'});
-    });
-
-    // Footer
-    pGradLine(doc,0,H-10,W,[217,119,87],[106,155,204]);
-    doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.setTextColor(176,174,165);
-    doc.text('(c) 2026 Anthropic PBC  |  Claude Fable 5 & Claude Mythos 5  |  anthropic.com',W/2,H-4.5,{align:'center'});
-    doc.text('Generated via FABLE — The Interactive Legend',18,H-4.5);
-    doc.text('Data accurate as of June 9, 2026',W-18,H-4.5,{align:'right'});
-
-    doc.save('fable-vs-mythos-comparison.pdf');
-    btn.textContent='✓ PDF Downloaded!';
-    btn.style.background='var(--green)';
-    msg.textContent='Saved as fable-vs-mythos-comparison.pdf';msg.style.color='var(--green)';
-    px(100);
-
-  } catch(e) {
-    btn.disabled=false;btn.textContent='📄 Download Comparison PDF';
-    msg.textContent='⚠ '+(e.message||'PDF generation failed');msg.style.color='#c0392b';
-    console.error(e);
+async function askWeaver(){
+  const txt=$('s1in').value.trim();
+  const err=$('s1err'),btn=$('s1ask'),out=$('s1out');
+  if(!txt){err.textContent='⚠ Set the Weaver a task first.';err.classList.add('on');return;}
+  err.classList.remove('on');
+  btn.disabled=true;btn.innerHTML='<span class="spin"></span> &nbsp;Weaving…';
+  out.style.display='none';out.textContent='';
+  startGen();
+  try{
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({prompt:txt,model:_model})});
+    if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Weaver could not be reached (error '+res.status+').');}
+    const data=await res.json();
+    const reply=extractReply(data);
+    if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
+    stopGen(true);
+    out.style.display='block';out.className='chat-box';
+    await typeText(out,reply);
+    if(!_asked){
+      _asked=true;
+      $('reward1').classList.add('show');
+      openSeal('seal0');
+      $('s1cont').style.display='block';
+      $('s1hint').textContent='The first seal is broken ✦';
+      px(45);
+    }
+  }catch(e){
+    stopGen(false);
+    out.style.display='none';out.className='chat-box';
+    err.textContent='⚠ '+(e.message||'Connection to the Weaver failed. Try again.');err.classList.add('on');
+  }finally{
+    btn.disabled=false;btn.innerHTML='<span>✦</span><span>'+(_asked?'Ask Again':'Summon the Weaver')+'</span>';
   }
 }
 
-// ── PDF HELPERS ───────────────────────────────────────────────
-function pBlob(doc,cx,cy,r,rgb,a){
-  doc.setGState(new doc.GState({opacity:a}));
-  doc.setFillColor(...rgb);doc.circle(cx,cy,r,'F');
-  doc.setGState(new doc.GState({opacity:1}));
+function updateCost(){
+  const c=_totalIn*IN_PPT+_totalOut*OUT_PPT;
+  $('cin').textContent=_totalIn.toLocaleString();
+  $('cout').textContent=_totalOut.toLocaleString();
+  $('cusd').textContent='$'+c.toFixed(6);
+  $('costp').style.display='flex';
 }
-function pGradLine(doc,x1,y,x2,c1,c2){
-  const n=24,sw=(x2-x1)/n;doc.setLineWidth(.9);
-  for(let i=0;i<n;i++){
-    const t=i/(n-1);
-    doc.setDrawColor(Math.round(c1[0]+t*(c2[0]-c1[0])),Math.round(c1[1]+t*(c2[1]-c1[1])),Math.round(c1[2]+t*(c2[2]-c1[2])));
-    doc.line(x1+i*sw,y,x1+(i+1)*sw,y);
-  }
-}
-function pColHead(doc,x,y,w,bg,bdr,tc,name,sub){
-  doc.setFillColor(...bg);doc.roundedRect(x,y,w,14,3,3,'F');
-  doc.setDrawColor(...bdr);doc.setLineWidth(.5);doc.roundedRect(x,y,w,14,3,3,'S');
-  doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(...tc);
-  doc.text(name,x+w/2,y+6.5,{align:'center'});
-  doc.setFont('helvetica','normal');doc.setFontSize(5.5);doc.setTextColor(176,174,165);
-  doc.text(sub,x+w/2,y+11.5,{align:'center'});
+// Reveals the whole answer smoothly in ~2.2s regardless of length (no slow crawl, no apparent truncation).
+function typeText(el,text,totalMs=2200){
+  return new Promise(r=>{
+    const n=text.length;
+    const step=Math.max(1,Math.ceil(n/(totalMs/16)));
+    let i=0;
+    const iv=setInterval(()=>{
+      i=Math.min(n,i+step);
+      el.textContent=text.slice(0,i);
+      if(i>=n){clearInterval(iv);r();}
+    },16);
+  });
 }
 
-// ── RESTART ───────────────────────────────────────────────────
+function openSeal(id){const row=$(id);if(!row)return;row.classList.add('open');
+  row.querySelector('.seal-ico').textContent='✓';row.querySelector('.seal-state').textContent='Unsealed';}
+
+// ── TRIAL II: VEIL ──
+const VEIL={
+  fable:{cls:'fable',title:'🦋 Fable — the gentle mask',lines:[
+    'Open to <b>everyone</b> — the general public, on every platform',
+    'Cyber, bio &amp; chemistry questions are <b>veiled</b>, handed to Opus 4.8 instead',
+    'The veil falls on fewer than <b>5% of sessions</b>',
+    'API id: <b>claude-fable-5</b>'
+  ]},
+  mythos:{cls:'mythos',title:'🌐 Mythos — the bare face',lines:[
+    'Shown only to <b>trusted guardians</b> — Project Glasswing partners &amp; researchers',
+    'Cyber safeguards <b>lifted</b> — the strongest cyber-defense AI in the world',
+    'Built <b>with the US government</b> to defend critical software',
+    'Not sold to the open public'
+  ]}
+};
+function setVeil(which){
+  const v=VEIL[which],p=$('veilPanel');
+  p.className='veil-panel '+v.cls;
+  $('veilTitle').innerHTML=v.title;
+  $('veilLines').innerHTML=v.lines.map(l=>'<div class="veil-line">'+l+'</div>').join('');
+  $('vbF').className=which==='fable'?'on-o':'';
+  $('vbM').className=which==='mythos'?'on-b':'';
+  if(which==='mythos'&&!_veilTouched){
+    _veilTouched=true;
+    openSeal('seal1');openSeal('seal2');
+    $('s2cont').style.display='block';
+    $('s2hint').textContent='Both seals are ready — descend to your treasures ✦';
+  }
+}
+
+// ── RESTART ──
 function restart(){
-  _score=0;_qIdx=0;_left=3;_totalIn=0;_totalOut=0;
-  $('score').textContent='0';$('qleft').textContent='3';
-  $('oinput').value='';
-  $('oout').style.display='none';$('oout').textContent='';
-  $('ocont').style.display='none';$('oerr').classList.remove('on');
-  $('cost-panel').style.display='none';
-  $('c-in').textContent='0';$('c-out').textContent='0';$('c-usd').textContent='$0.000000';
-  const ab=$('askbtn');ab.disabled=false;ab.innerHTML='<span>✦</span><span>Consult the Oracle</span>';
-  const pb=$('pdfbtn');pb.disabled=false;pb.textContent='📄 Download Comparison PDF';pb.style.background='';
-  $('pdfmsg').style.display='none';
+  _totalIn=0;_totalOut=0;_asked=false;_veilTouched=false;
+  if(_genIv){clearInterval(_genIv);_genIv=null;}$('s1gen').classList.remove('on');
+  $('s1in').value='';$('s1out').style.display='none';$('s1out').textContent='';
+  $('s1err').classList.remove('on');$('s1cont').style.display='none';
+  $('reward1').classList.remove('show');
+  $('costp').style.display='none';$('cin').textContent='0';$('cout').textContent='0';$('cusd').textContent='$0.000000';
+  $('s1ask').disabled=false;$('s1ask').innerHTML='<span>✦</span><span>Summon the Weaver</span>';
+  $('s1hint').textContent='Ask once to break the first seal';
+  $('s2cont').style.display='none';$('s2hint').textContent='Turn the mask to continue…';
+  ['seal0','seal1','seal2'].forEach((id,i)=>{const r=$(id);r.classList.remove('open');
+    r.querySelector('.seal-ico').textContent=['✦','⚖','📖'][i];r.querySelector('.seal-state').textContent='Sealed';});
   px(0);showScreen('s0');
 }
 </script>
