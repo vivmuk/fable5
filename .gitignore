@@ -1,0 +1,17 @@
+# Large source PDF (not part of the app)
+*.pdf
+
+# Scratch / duplicate originals (clean copies live as treasure*.png)
+images/Untitled
+images/image 1.png
+images/image 2.png
+images/image 3.png
+
+# Unused legacy infographics (superseded by treasure scrolls)
+images/info1-fable5.png
+images/info2-comparison.png
+images/info3-pricing.png
+
+# OS / editor cruft
+Thumbs.db
+.DS_Store
