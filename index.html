@@ -127,6 +127,13 @@
     .txa:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-l);}
     .txa::placeholder{color:var(--gray-m);}
     .chip-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.8rem;}
+    .model-selector-wrap{margin:.8rem 0;display:flex;flex-direction:column;gap:.35rem;}
+    .model-selector-label{font-family:var(--ff-m);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gray-m);}
+    .model-selector{width:100%;background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);padding:.55rem .9rem;color:var(--dark);font-family:var(--ff-b);font-size:.88rem;outline:none;cursor:pointer;transition:border-color .25s,box-shadow .25s;}
+    .model-selector:focus{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-l);}
+    .model-notice{font-size:.78rem;color:var(--gray-m);margin:0;line-height:1.55;}
+    .model-notice a{color:var(--orange);text-decoration:none;}
+    .model-notice a:hover{text-decoration:underline;}
     .chip{background:var(--cream);border:1.5px solid var(--gray-l);border-radius:20px;padding:.3rem .8rem;
       font-family:var(--ff-m);font-size:.64rem;color:var(--dark);cursor:pointer;transition:all .2s;}
     .chip:hover{border-color:var(--orange);background:var(--orange-l);color:var(--orange-d);}
@@ -358,6 +365,16 @@
             <span class="chip" onclick="setP(this)">✨ What can you do that older AI models couldn't?</span>
             <span class="chip" onclick="setP(this)">📖 Why did Anthropic name you Fable?</span>
           </div>
+
+          <div class="model-selector-wrap">
+            <label class="model-selector-label" for="modelPicker">AI Model</label>
+            <select id="modelPicker" class="model-selector" onchange="_model=this.value">
+              <option value="" disabled>Claude Fable 5 — Unavailable</option>
+              <option value="google-gemma-4-31b-it" selected>Google Jammer (google-gemma-4-31b-it)</option>
+            </select>
+            <p class="model-notice">Fable 5 access has been suspended under new government regulations. <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Read the announcement →</a></p>
+          </div>
+
           <textarea id="s1in" class="txa" placeholder="Or ask Fable 5 anything you like..."></textarea>
 
           <div class="gen" id="s1gen">
@@ -490,7 +507,7 @@
 'use strict';
 
 // ── STATE ──
-let _model='claude-fable-5';
+let _model='google-gemma-4-31b-it';
 let _totalIn=0,_totalOut=0,_asked=false,_veilTouched=false;
 const IN_PPT=10/1_000_000, OUT_PPT=50/1_000_000;
 
