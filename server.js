@@ -17,7 +17,7 @@ const VENICE_KEY = process.env.VENICE_API_KEY;
 const VENICE_URL = 'https://api.venice.ai/api/v1/chat/completions';
 
 // Only these models may be requested through the proxy.
-const ALLOWED_MODELS = new Set(['claude-fable-5', 'claude-opus-4-7', 'claude-opus-4-8']);
+const ALLOWED_MODELS = new Set(['claude-fable-5', 'claude-opus-4-7', 'claude-opus-4-8', 'google-gemma-4-31b-it']);
 
 // The Oracle's persona is fixed server-side so the proxy can't be
 // repurposed as a free general-purpose LLM with someone else's key.
