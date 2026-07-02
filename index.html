@@ -369,10 +369,10 @@
           <div class="model-selector-wrap">
             <label class="model-selector-label" for="modelPicker">AI Model</label>
             <select id="modelPicker" class="model-selector" onchange="_model=this.value">
-              <option value="" disabled>Claude Fable 5 — Unavailable</option>
-              <option value="google-gemma-4-31b-it" selected>Google Jammer (google-gemma-4-31b-it)</option>
+              <option value="claude-fable-5" selected>Claude Fable 5 (claude-fable-5)</option>
+              <option value="google-gemma-4-31b-it">Google Jammer (google-gemma-4-31b-it)</option>
             </select>
-            <p class="model-notice">Fable 5 access has been suspended under new government regulations. <a href="https://www.anthropic.com/news/fable-mythos-access" target="_blank" rel="noopener noreferrer">Read the announcement →</a></p>
+            <p class="model-notice">Fable 5 access has been restored on Venice. Google Jammer remains available as a fallback.</p>
           </div>
 
           <textarea id="s1in" class="txa" placeholder="Or ask Fable 5 anything you like..."></textarea>
@@ -507,7 +507,7 @@
 'use strict';
 
 // ── STATE ──
-let _model='google-gemma-4-31b-it';
+let _model='claude-fable-5';
 let _totalIn=0,_totalOut=0,_asked=false,_veilTouched=false;
 const IN_PPT=10/1_000_000, OUT_PPT=50/1_000_000;
 
