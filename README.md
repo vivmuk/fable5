@@ -4,11 +4,15 @@ A short, story-driven web game that teaches people about **Claude Fable 5**, Ant
 
 ## How it works
 
-A single self-contained front end (`index.html`) plus a tiny backend proxy (`server.js`). The tale is told in **two trials**, and finishing them unseals **three illustrated treasure scrolls**.
+A single self-contained front end (`index.html`) plus a tiny backend proxy (`server.js`). The tale is told in **six chapters**, and finishing them unseals **six illustrated treasure scrolls**.
 
-1. **Trial I — The Weaver of Worlds.** A fable about Fable 5's real powers (vision, software engineering, memory, reasoning), told as myth and grounded with fact "glints." Then you **play live with the actual Fable 5 model** — give the Weaver a real task (code, reasoning, science, creativity) and watch it answer, with a live generating progress bar and a real-time token-cost meter. Asking once breaks the first seal.
-2. **Trial II — The Two Masks.** The story of Fable and Mythos as one mind behind two veils. An interactive "lift the veil" toggle shows exactly what each model exposes (safeguards, access, the shared price). Turning the mask breaks the final seals.
-3. **The Treasures Unsealed.** The three scrolls are revealed — view full-size or download each.
+1. **Chapter I — The Weaver of Worlds.** A fable about Fable 5's real powers (vision, software engineering, memory, reasoning), told as myth and grounded with fact "glints." Then you **play live with the actual Fable 5 model** — give the Weaver a real task (code, reasoning, science, creativity) and watch it answer, with a live generating progress bar and a real-time token-cost meter. Asking once breaks the first seal.
+2. **Chapter II — The Two Masks.** The story of Fable and Mythos as one mind behind two veils. An interactive "lift the veil" toggle shows exactly what each model exposes (safeguards, access, the shared price). Turning the mask breaks the second seal.
+3. **Chapter III — The Builder’s Playbook.** A chapter devoted to real-world use cases — writing, design-to-code, analysis, and tutoring. Claiming the playbook breaks the third seal.
+4. **Chapter IV — The Forge.** A software-engineering trial where you ask the live Fable 5 model to generate code, debug a snippet, explain an algorithm, or refactor a function. Asking once breaks the fourth seal.
+5. **Chapter V — The Vision.** A vision-capabilities trial where you ask the live model what it would see in an image, chart, UI mockup, or screenshot. Asking once breaks the fifth seal.
+6. **Chapter VI — The Memory.** A long-context trial where you ask the live model to remember facts, recall earlier details, or summarize a long prompt. Asking once breaks the sixth seal.
+7. **The Treasures Unsealed.** All six scrolls are revealed — view full-size or download each.
 
 The home screen lists the treasures as a **minimalist sealed manifest** (no spoilers), so players know what awaits without seeing it.
 
@@ -42,7 +46,7 @@ VENICE_API_KEY=your-key npm start   # http://localhost:3000
 ## Assets
 
 - `images/banner-*.png` — AI-generated chapter art (Venice `gpt-image-2`).
-- `images/treasure*.png` — the three illustrated reward scrolls.
+- `images/treasure*.png` — the six illustrated reward scrolls.
 - `make_infographics.py` — a Pillow renderer kept around for data-accurate infographics (AI image models garble exact numbers, so stats/pricing can be drawn programmatically).
 
 ## Tech
