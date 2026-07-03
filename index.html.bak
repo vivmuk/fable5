@@ -28,22 +28,22 @@
         radial-gradient(ellipse at 20% 25%,rgba(217,119,87,.06) 0%,transparent 55%),
         radial-gradient(ellipse at 80% 75%,rgba(106,155,204,.07) 0%,transparent 55%),
         radial-gradient(ellipse at 50% 100%,rgba(120,140,93,.04) 0%,transparent 45%);}
-    #cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;will-change:transform;contain:layout style paint;}
+    #cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.55;}
 
     #prog{position:fixed;top:0;left:0;width:100%;height:3px;z-index:1000;background:var(--gray-l);}
-    #pf{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--blue));transition:width .8s ease;will-change:width;}
+    #pf{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--blue));transition:width .8s ease;}
 
-    .scr{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;content-visibility:auto;}
-    .scr.on{display:flex;content-visibility:visible;}
+    .scr{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;}
+    .scr.on{display:flex;}
 
     .card{width:100%;max-width:680px;background:var(--white);border-radius:var(--radius);
-      box-shadow:0 2px 8px var(--shadow),0 12px 40px var(--shadow-m);overflow:hidden;contain:layout style paint;}
-    .card-body{padding:2rem 2.4rem 2.2rem;contain:layout style paint;}
+      box-shadow:0 2px 8px var(--shadow),0 12px 40px var(--shadow-m);overflow:hidden;}
+    .card-body{padding:2rem 2.4rem 2.2rem;}
     @media(max-width:520px){.card-body{padding:1.4rem 1.2rem;}}
 
     /* banner */
     .img-banner{width:100%;height:200px;position:relative;overflow:hidden;
-      background:linear-gradient(135deg,var(--orange-l) 0%,var(--blue-l) 100%);contain:layout style paint;}
+      background:linear-gradient(135deg,var(--orange-l) 0%,var(--blue-l) 100%);}
     .img-banner img{width:100%;height:100%;object-fit:cover;display:block;}
     .img-banner .grad{position:absolute;bottom:0;left:0;right:0;height:100px;
       background:linear-gradient(transparent,var(--white));pointer-events:none;}
@@ -147,7 +147,7 @@
     .gen{display:none;margin:1rem 0;background:var(--cream);border:1.5px solid var(--gray-l);border-radius:var(--radius-sm);padding:1rem 1.1rem;}
     .gen.on{display:block;}
     .gen-track{height:9px;border-radius:6px;background:var(--gray-l);overflow:hidden;position:relative;}
-    .gen-fill{height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,var(--orange),var(--blue),var(--orange));background-size:200% 100%;animation:genslide 1.5s linear infinite;transition:width .35s ease;will-change:width;}
+    .gen-fill{height:100%;width:0%;border-radius:6px;background:linear-gradient(90deg,var(--orange),var(--blue),var(--orange));background-size:200% 100%;animation:genslide 1.5s linear infinite;transition:width .35s ease;}
     @keyframes genslide{0%{background-position:0% 0}100%{background-position:200% 0}}
     .gen-meta{display:flex;align-items:center;justify-content:space-between;margin-top:.6rem;}
     .gen-msg{font-family:var(--ff-b);font-style:italic;font-size:.82rem;color:#3a3a37;}
@@ -158,7 +158,7 @@
       border:2px solid transparent;
       background:linear-gradient(var(--white),var(--white)) padding-box,
                  linear-gradient(135deg,var(--orange),var(--blue)) border-box;
-      box-shadow:0 6px 26px rgba(217,119,87,.16);contain:layout style paint;}
+      box-shadow:0 6px 26px rgba(217,119,87,.16);}
     .live-head{display:flex;align-items:center;gap:.55rem;padding:.7rem 1rem;
       background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-bottom:1px solid rgba(20,20,19,.06);}
     .live-head .s-dot{flex:none;}
@@ -228,9 +228,9 @@
     .spin{display:inline-block;width:15px;height:15px;border:2px solid rgba(217,119,87,.3);border-top-color:var(--orange);border-radius:50%;animation:sp .7s linear infinite;vertical-align:middle;}
     @keyframes sp{to{transform:rotate(360deg)}}
 
-    .cft{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:950;animation:cfall linear forwards;will-change:transform;}
+    .cft{position:fixed;width:7px;height:7px;border-radius:2px;pointer-events:none;z-index:950;animation:cfall linear forwards;}
     @keyframes cfall{0%{opacity:1;transform:translateY(-10px) rotate(0)}100%{opacity:0;transform:translateY(105vh) rotate(720deg)}}
-    .bf{position:fixed;font-size:1.1rem;pointer-events:none;z-index:2;opacity:0;animation:bfrise linear infinite;will-change:transform;}
+    .bf{position:fixed;font-size:1.1rem;pointer-events:none;z-index:2;opacity:0;animation:bfrise linear infinite;}
     @keyframes bfrise{0%{opacity:0;transform:translateY(104vh) rotate(-12deg) scale(.4)}8%{opacity:.5}92%{opacity:.2}100%{opacity:0;transform:translateY(-14vh) rotate(12deg) scale(1)}}
 
     /* lightbox */
@@ -261,7 +261,7 @@
 <div id="s0" class="scr on">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-intro.png" alt="" loading="lazy" />
+      <img src="images/banner-intro.png" alt="" />
       <div class="grad"></div>
       <div class="banner-cap">CLAUDE FABLE 5 · AN INTERACTIVE TALE</div>
     </div>
@@ -274,10 +274,10 @@
         Anthropic wove a new kind of mind and named it <span class="badge badge-o">Fable</span> — from the Latin <em>fabula</em>, “a tale.” It is the most capable model ever opened to the public.
       </p>
       <p class="t-body tc mb2">
-        This is its story, told in <strong style="color:var(--orange)">six chapters</strong>. Walk them all, and six sealed treasures will be yours.
+        This is its story, told in <strong style="color:var(--orange)">two trials</strong>. Walk them both, and three sealed treasures will be yours.
       </p>
       <p class="t-body tc" style="background:linear-gradient(135deg,var(--orange-l),var(--blue-l));border-radius:var(--radius-sm);padding:.7rem .9rem;font-size:.88rem">
-        🎮 <strong style="color:var(--orange-d)">Best part:</strong> in Chapters 1, 4, 5, and 6 you’ll <strong>play live with the brand-new Fable 5 model</strong> — give the Weaver a real task and watch it work.
+        🎮 <strong style="color:var(--orange-d)">Best part:</strong> in Trial I you’ll <strong>play live with the brand-new Fable 5 model</strong> — give it a real task and watch it work.
       </p>
 
       <div class="div-deco mt3">the sealed treasures</div>
@@ -306,30 +306,6 @@
           </div>
           <div class="seal-state">Sealed</div>
         </div>
-        <div class="seal-row" id="seal3">
-          <div class="seal-ico">🔨</div>
-          <div class="seal-txt">
-            <div class="seal-name">The Smith’s Forge</div>
-            <div class="seal-desc">Software engineering and code</div>
-          </div>
-          <div class="seal-state">Sealed</div>
-        </div>
-        <div class="seal-row" id="seal4">
-          <div class="seal-ico">👁</div>
-          <div class="seal-txt">
-            <div class="seal-name">The Seer’s Lens</div>
-            <div class="seal-desc">Vision that reads the world</div>
-          </div>
-          <div class="seal-state">Sealed</div>
-        </div>
-        <div class="seal-row" id="seal5">
-          <div class="seal-ico">🧿</div>
-          <div class="seal-txt">
-            <div class="seal-name">The Infinite Scroll</div>
-            <div class="seal-desc">Memory across a million tokens</div>
-          </div>
-          <div class="seal-state">Sealed</div>
-        </div>
       </div>
 
       <div class="div-deco mt3">your oracle awaits</div>
@@ -341,23 +317,23 @@
       <button class="btn btn-primary w100 btn-icon mt1" onclick="goStage1()">
         <span>✦</span><span>Begin the Fable</span><span>✦</span>
       </button>
-      <p class="t-glyph mt3" style="opacity:.35">❦ Six Chapters · Six Treasures · One Legend ❦</p>
+      <p class="t-glyph mt3" style="opacity:.35">❦ Two Trials · Three Treasures · One Legend ❦</p>
       <p class="venice-credit">Powered by <a href="https://venice.ai/chat?ref=yN8qqI" target="_blank" rel="noopener">Venice.ai</a></p>
     </div>
   </div>
 </div>
 
-<!-- ════════════ SCREEN 1 — CHAPTER I: THE WEAVER OF WORLDS ════════════ -->
+<!-- ════════════ SCREEN 1 — TRIAL I: THE WEAVER OF WORLDS ════════════ -->
 <div id="s1" class="scr">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-ch1.png" alt="" loading="lazy" />
+      <img src="images/banner-ch1.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CHAPTER I — THE WEAVER OF WORLDS</div>
+      <div class="banner-cap">TRIAL I — THE WEAVER OF WORLDS</div>
     </div>
     <div class="card-body">
-      <div class="dots"><div class="dot cur"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <p class="t-over mb1">Chapter the First</p>
+      <div class="dots"><div class="dot cur"></div><div class="dot"></div><div class="dot"></div></div>
+      <p class="t-over mb1">Trial the First</p>
       <h1 class="t-h1 mb2">The Weaver of Worlds</h1>
 
       <p class="t-tale dropcap mb2">
@@ -384,10 +360,10 @@
           <p class="t-body mb2" style="font-size:.86rem">This is the actual brand-new model — not a script. Tap a question to ask it about itself, or write your own. Every answer below is generated live.</p>
 
           <div class="chip-row">
-            <span class="chip" onclick="setP('s1in',this)">🦋 What makes you, Fable 5, special?</span>
-            <span class="chip" onclick="setP('s1in',this)">⚖️ How are you different from Claude Mythos 5?</span>
-            <span class="chip" onclick="setP('s1in',this)">✨ What can you do that older AI models couldn't?</span>
-            <span class="chip" onclick="setP('s1in',this)">📖 Why did Anthropic name you Fable?</span>
+            <span class="chip" onclick="setP(this)">🦋 What makes you, Fable 5, special?</span>
+            <span class="chip" onclick="setP(this)">⚖️ How are you different from Claude Mythos 5?</span>
+            <span class="chip" onclick="setP(this)">✨ What can you do that older AI models couldn't?</span>
+            <span class="chip" onclick="setP(this)">📖 Why did Anthropic name you Fable?</span>
           </div>
 
           <div class="model-selector-wrap">
@@ -425,7 +401,7 @@
 
       <!-- Treasure 1 reveal -->
       <div class="reward" id="reward1">
-        <img src="images/treasure1-features.png" alt="The Cartographer's Map" loading="lazy" onclick="openLB('images/treasure1-features.png')" />
+        <img src="images/treasure1-features.png" alt="The Cartographer's Map" onclick="openLB('images/treasure1-features.png')" />
         <div class="reward-foot">
           <span class="reward-name">🗺️ The Cartographer’s Map — unsealed</span>
           <button class="reward-dl" onclick="dlImg('images/treasure1-features.png','claude5-10-key-features.png')">⬇ Download</button>
@@ -434,23 +410,23 @@
 
       <div id="s1cont" style="display:none">
         <div class="div-deco mt2">the first seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goStage2()"><span>✦</span><span>Enter the Second Chapter</span><span>✦</span></button>
+        <button class="btn btn-blue w100 btn-icon" onclick="goStage2()"><span>✦</span><span>Enter the Second Trial</span><span>✦</span></button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ════════════ SCREEN 2 — CHAPTER II: THE TWO MASKS ════════════ -->
+<!-- ════════════ SCREEN 2 — TRIAL II: THE TWO MASKS ════════════ -->
 <div id="s2" class="scr">
   <div class="card">
     <div class="img-banner">
-      <img src="images/banner-ch2.png" alt="" loading="lazy" />
+      <img src="images/banner-ch2.png" alt="" />
       <div class="grad"></div>
-      <div class="banner-cap">CHAPTER II — THE TWO MASKS</div>
+      <div class="banner-cap">TRIAL II — THE TWO MASKS</div>
     </div>
     <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <p class="t-over mb1">Chapter the Second</p>
+      <div class="dots"><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div></div>
+      <p class="t-over mb1">Trial the Second</p>
       <h1 class="t-h1 mb2">The Two Masks</h1>
 
       <p class="t-tale dropcap mb2">
@@ -472,344 +448,48 @@
       </div>
 
       <div id="s2cont" style="display:none">
-        <div class="div-deco mt3">the second seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goStage3()"><span>✦</span><span>Enter the Third Chapter</span><span>✦</span></button>
+        <div class="div-deco mt3">both seals are ready to break</div>
+        <button class="btn btn-primary w100 btn-icon" onclick="goFinale()"><span>✦</span><span>Unseal the Treasures</span><span>✦</span></button>
       </div>
       <p class="t-mono tc mt2" id="s2hint" style="color:var(--gray-m)">Turn the mask to continue…</p>
     </div>
   </div>
 </div>
 
-<!-- ════════════ SCREEN 3 — CHAPTER III: THE BUILDER’S PLAYBOOK ════════════ -->
+<!-- ════════════ SCREEN 3 — THE TREASURES UNSEALED ════════════ -->
 <div id="s3" class="scr">
-  <div class="card">
-    <div class="img-banner">
-      <img src="images/banner-ch3.png" alt="" loading="lazy" />
-      <div class="grad"></div>
-      <div class="banner-cap">CHAPTER III — THE BUILDER’S PLAYBOOK</div>
-    </div>
-    <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <p class="t-over mb1">Chapter the Third</p>
-      <h1 class="t-h1 mb2">The Builder’s Playbook</h1>
-
-      <p class="t-tale dropcap mb2">
-        Having seen the Weaver’s powers, the builders of the realm came to ask: <span class="em">“What can we make with it?”</span> The answer filled a whole playbook. Fable could draft laws from scattered notes, turn a napkin sketch into a working palace, tutor a student through a thousand questions without losing patience, and read a warehouse of ledgers to find the one crooked sum. It was not merely clever; it was <span class="emb">useful</span> — a companion for every craft.
-      </p>
-
-      <div class="glints">
-        <div class="glint"><span class="glint-i">📝</span><span class="glint-t"><b>Writing &amp; drafting</b>Long-form reports, emails, briefs, and creative prose from a few hints.</span></div>
-        <div class="glint"><span class="glint-i">🎨</span><span class="glint-t"><b>Design → code</b>Turn sketches, mockups, or descriptions into working web apps.</span></div>
-        <div class="glint"><span class="glint-i">🧮</span><span class="glint-t"><b>Analysis</b>Sift spreadsheets, logs, and documents to surface insight.</span></div>
-        <div class="glint"><span class="glint-i">🎓</span><span class="glint-t"><b>Tutoring</b>Explain complex topics step by step, adapting to the learner.</span></div>
-      </div>
-
-      <div class="div-deco">the third seal awaits</div>
-      <p class="t-body tc mb2" style="font-size:.86rem">
-        The Builder’s Playbook is yours once you step forward.
-      </p>
-
-      <!-- Treasure 3 reveal -->
-      <div class="reward" id="reward3">
-        <img src="images/treasure3-playbook.png" alt="The Builder's Playbook" loading="lazy" onclick="openLB('images/treasure3-playbook.png')" />
-        <div class="reward-foot">
-          <span class="reward-name">📖 The Builder's Playbook — unsealed</span>
-          <button class="reward-dl" onclick="dlImg('images/treasure3-playbook.png','fable-use-case-playbook.png')">⬇ Download</button>
-        </div>
-      </div>
-
-      <div id="s3cont" style="display:none">
-        <div class="div-deco mt2">the third seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goStage4()"><span>✦</span><span>Enter the Fourth Chapter</span><span>✦</span></button>
-      </div>
-      <button id="s3break" class="btn btn-primary w100 btn-icon" onclick="breakSeal3()">
-        <span>✦</span><span>Claim the Builder’s Playbook</span><span>✦</span>
-      </button>
-      <p class="t-mono tc mt2" id="s3hint" style="color:var(--gray-m)">Claim the treasure to continue…</p>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ SCREEN 4 — CHAPTER IV: THE FORGE ════════════ -->
-<div id="s4" class="scr">
-  <div class="card">
-    <div class="img-banner">
-      <img src="images/banner-ch4.png" alt="" loading="lazy" />
-      <div class="grad"></div>
-      <div class="banner-cap">CHAPTER IV — THE FORGE</div>
-    </div>
-    <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div><div class="dot"></div></div>
-      <p class="t-over mb1">Chapter the Fourth</p>
-      <h1 class="t-h1 mb2">The Forge</h1>
-
-      <p class="t-tale dropcap mb2">
-        Deep beneath the Weaver’s tower lay the <span class="em">Forge</span>, where entire machines were hammered into shape from nothing but a whispered wish. A merchant would ask for a scale to weigh his coins; the Forge would build it. A scholar would bring a broken astrolabe; the Forge would mend it and explain every gear. It could read the tangled blueprints of a thousand-year-old cathedral and know which stone was out of place. Code, to the Forge, was simply another kind of poetry.
-      </p>
-
-      <div class="glints">
-        <div class="glint"><span class="glint-i">⚡</span><span class="glint-t"><b>Code generation</b>Write functions, classes, and full programs from a description.</span></div>
-        <div class="glint"><span class="glint-i">🐛</span><span class="glint-t"><b>Debugging</b>Find the flaw in a snippet and suggest a precise fix.</span></div>
-        <div class="glint"><span class="glint-i">🧩</span><span class="glint-t"><b>Algorithms</b>Explain how a technique works and implement it cleanly.</span></div>
-        <div class="glint"><span class="glint-i">🏗️</span><span class="glint-t"><b>Refactoring</b>Restructure large codebases while keeping behavior intact.</span></div>
-      </div>
-
-      <div class="div-deco">now — ask the forge to build something</div>
-
-      <div class="live-console">
-        <div class="live-head">
-          <div class="s-dot"></div>
-          <span class="live-badge">The Forge is live · <span>Claude Fable 5</span></span>
-          <span class="live-sub">LIVE · VIA VENICE</span>
-        </div>
-        <div class="live-body">
-          <p class="t-body mb2" style="font-size:.86rem">Give the Forge a coding task — generate, debug, explain, or refactor. Every answer is woven live by Fable 5.</p>
-
-          <div class="chip-row">
-            <span class="chip" onclick="setP('s4in',this)">🐍 Write me a Python function to fetch JSON and retry on failure</span>
-            <span class="chip" onclick="setP('s4in',this)">🐛 Debug this: my loop runs forever when the list is empty</span>
-            <span class="chip" onclick="setP('s4in',this)">🧩 Explain how a binary search works, then write one</span>
-            <span class="chip" onclick="setP('s4in',this)">⚡ Refactor this messy function into clean, testable code</span>
-          </div>
-
-          <textarea id="s4in" class="txa" placeholder="Ask the Forge to write or fix code…"></textarea>
-
-          <div class="gen" id="s4gen">
-            <div class="gen-track"><div class="gen-fill" id="genfill4"></div></div>
-            <div class="gen-meta"><span class="gen-msg" id="genmsg4">The Forge is hammering…</span><span class="gen-pct" id="genpct4">0%</span></div>
-          </div>
-
-          <div id="s4out" class="chat-box"></div>
-          <div id="s4err" class="err"></div>
-
-          <div class="rowb mt1">
-            <span class="t-mono" style="color:var(--gray-m)" id="s4hint">Ask once to break the fourth seal</span>
-            <button id="s4ask" class="btn btn-primary btn-icon" onclick="askForge()"><span>✦</span><span>Strike the Forge</span></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="reward" id="reward4">
-        <img src="images/treasure4-forge.png" alt="The Smith's Forge" loading="lazy" onclick="openLB('images/treasure4-forge.png')" />
-        <div class="reward-foot">
-          <span class="reward-name">🔨 The Smith’s Forge — unsealed</span>
-          <button class="reward-dl" onclick="dlImg('images/treasure4-forge.png','fable-software-engineering.png')">⬇ Download</button>
-        </div>
-      </div>
-
-      <div id="s4cont" style="display:none">
-        <div class="div-deco mt2">the fourth seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goStage5()"><span>✦</span><span>Enter the Fifth Chapter</span><span>✦</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ SCREEN 5 — CHAPTER V: THE VISION ════════════ -->
-<div id="s5" class="scr">
-  <div class="card">
-    <div class="img-banner">
-      <img src="images/banner-ch5.png" alt="" loading="lazy" />
-      <div class="grad"></div>
-      <div class="banner-cap">CHAPTER V — THE VISION</div>
-    </div>
-    <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div><div class="dot"></div></div>
-      <p class="t-over mb1">Chapter the Fifth</p>
-      <h1 class="t-h1 mb2">The Vision</h1>
-
-      <p class="t-tale dropcap mb2">
-        In a high tower the Weaver kept a lens that could read the world itself. It looked upon a single painted map and named every road, every bridge, every patch of forest. It watched a game unfold one frame at a time and <span class="em">learned to win</span>, not from rules, but from sight alone. Merchants brought it faded ledgers; the lens read the handwriting. Architects brought it rough sketches; the lens saw the finished hall. Nothing visible was foreign to it.
-      </p>
-
-      <div class="glints">
-        <div class="glint"><span class="glint-i">🎮</span><span class="glint-t"><b>Game playing</b>Beat Pokémon FireRed from raw screenshots, no internal map.</span></div>
-        <div class="glint"><span class="glint-i">🗺️</span><span class="glint-t"><b>Charts &amp; diagrams</b>Extract structure, labels, and relationships from images.</span></div>
-        <div class="glint"><span class="glint-i">🖼️</span><span class="glint-t"><b>UI mockups</b>Turn a sketch or screenshot into working code.</span></div>
-        <div class="glint"><span class="glint-i">🔍</span><span class="glint-t"><b>Document reading</b>Read handwriting, tables, and forms accurately.</span></div>
-      </div>
-
-      <div class="div-deco">now — ask about its vision</div>
-
-      <div class="live-console">
-        <div class="live-head">
-          <div class="s-dot"></div>
-          <span class="live-badge">The Lens is open · <span>Claude Fable 5</span></span>
-          <span class="live-sub">LIVE · VIA VENICE</span>
-        </div>
-        <div class="live-body">
-          <p class="t-body mb2" style="font-size:.86rem">Ask Fable 5 how it would analyze an image, read a layout, or describe what it sees. (For this text demo, describe the image in your prompt.)</p>
-
-          <div class="chip-row">
-            <span class="chip" onclick="setP('s5in',this)">🖼️ What could you tell me if I uploaded a screenshot of a website?</span>
-            <span class="chip" onclick="setP('s5in',this)">🗺️ How would you read a complex chart or diagram?</span>
-            <span class="chip" onclick="setP('s5in',this)">🎨 What colors, shapes, and layout would you notice in a UI mockup?</span>
-            <span class="chip" onclick="setP('s5in',this)">🎮 How did you play Pokémon from just screenshots?</span>
-          </div>
-
-          <textarea id="s5in" class="txa" placeholder="Describe an image and ask Fable 5 what it would see…"></textarea>
-
-          <div class="gen" id="s5gen">
-            <div class="gen-track"><div class="gen-fill" id="genfill5"></div></div>
-            <div class="gen-meta"><span class="gen-msg" id="genmsg5">The Lens is focusing…</span><span class="gen-pct" id="genpct5">0%</span></div>
-          </div>
-
-          <div id="s5out" class="chat-box"></div>
-          <div id="s5err" class="err"></div>
-
-          <div class="rowb mt1">
-            <span class="t-mono" style="color:var(--gray-m)" id="s5hint">Ask once to break the fifth seal</span>
-            <button id="s5ask" class="btn btn-primary btn-icon" onclick="askVision()"><span>✦</span><span>Peer Through the Lens</span></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="reward" id="reward5">
-        <img src="images/treasure5-vision.png" alt="The Seer's Lens" loading="lazy" onclick="openLB('images/treasure5-vision.png')" />
-        <div class="reward-foot">
-          <span class="reward-name">👁️ The Seer’s Lens — unsealed</span>
-          <button class="reward-dl" onclick="dlImg('images/treasure5-vision.png','fable-vision-capabilities.png')">⬇ Download</button>
-        </div>
-      </div>
-
-      <div id="s5cont" style="display:none">
-        <div class="div-deco mt2">the fifth seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goStage6()"><span>✦</span><span>Enter the Sixth Chapter</span><span>✦</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ SCREEN 6 — CHAPTER VI: THE MEMORY ════════════ -->
-<div id="s6" class="scr">
-  <div class="card">
-    <div class="img-banner">
-      <img src="images/banner-ch6.png" alt="" loading="lazy" />
-      <div class="grad"></div>
-      <div class="banner-cap">CHAPTER VI — THE MEMORY</div>
-    </div>
-    <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div></div>
-      <p class="t-over mb1">Chapter the Sixth</p>
-      <h1 class="t-h1 mb2">The Memory</h1>
-
-      <p class="t-tale dropcap mb2">
-        The Weaver carried no ledger, yet it forgot nothing. Across a thousand thousand scrolls it could remember the name of a minor knight mentioned once, the color of a banner glimpsed in chapter one, and the promise made a hundred pages later. It learned from the notes it wrote in its own margins, <span class="em">improving as it went</span>, never losing the thread. Long tales did not weary it; vast archives did not drown it. Its memory was a library with no closing hour.
-      </p>
-
-      <div class="glints">
-        <div class="glint"><span class="glint-i">📜</span><span class="glint-t"><b>Long context</b>Hold millions of tokens in working memory across a conversation.</span></div>
-        <div class="glint"><span class="glint-i">📝</span><span class="glint-t"><b>Recall</b>Remember details, names, and instructions from far earlier.</span></div>
-        <div class="glint"><span class="glint-i">🔄</span><span class="glint-t"><b>Self-improvement</b>Learn from its own notes and previous reasoning.</span></div>
-        <div class="glint"><span class="glint-i">🏛️</span><span class="glint-t"><b>Large documents</b>Analyze books, codebases, and archives as one coherent whole.</span></div>
-      </div>
-
-      <div class="div-deco">now — test its memory</div>
-
-      <div class="live-console">
-        <div class="live-head">
-          <div class="s-dot"></div>
-          <span class="live-badge">The Memory is alive · <span>Claude Fable 5</span></span>
-          <span class="live-sub">LIVE · VIA VENICE</span>
-        </div>
-        <div class="live-body">
-          <p class="t-body mb2" style="font-size:.86rem">Tell Fable 5 a few facts, then ask it to recall them. Or ask it to summarize and remember something you “shared earlier” in the same message.</p>
-
-          <div class="chip-row">
-            <span class="chip" onclick="setP('s6in',this)">🧠 Remember these three facts about me, then repeat them back</span>
-            <span class="chip" onclick="setP('s6in',this)">📖 Summarize the key points from our conversation so far</span>
-            <span class="chip" onclick="setP('s6in',this)">🔍 What did I tell you about my project earlier in this message?</span>
-            <span class="chip" onclick="setP('s6in',this)">✨ How does long-context memory change what AI can do?</span>
-          </div>
-
-          <textarea id="s6in" class="txa" placeholder="Give Fable 5 something to remember and recall…"></textarea>
-
-          <div class="gen" id="s6gen">
-            <div class="gen-track"><div class="gen-fill" id="genfill6"></div></div>
-            <div class="gen-meta"><span class="gen-msg" id="genmsg6">The Memory is reaching back…</span><span class="gen-pct" id="genpct6">0%</span></div>
-          </div>
-
-          <div id="s6out" class="chat-box"></div>
-          <div id="s6err" class="err"></div>
-
-          <div class="rowb mt1">
-            <span class="t-mono" style="color:var(--gray-m)" id="s6hint">Ask once to break the sixth seal</span>
-            <button id="s6ask" class="btn btn-primary btn-icon" onclick="askMemory()"><span>✦</span><span>Consult the Memory</span></button>
-          </div>
-        </div>
-      </div>
-
-      <div class="reward" id="reward6">
-        <img src="images/treasure6-memory.png" alt="The Infinite Scroll" loading="lazy" onclick="openLB('images/treasure6-memory.png')" />
-        <div class="reward-foot">
-          <span class="reward-name">🧿 The Infinite Scroll — unsealed</span>
-          <button class="reward-dl" onclick="dlImg('images/treasure6-memory.png','fable-long-context-memory.png')">⬇ Download</button>
-        </div>
-      </div>
-
-      <div id="s6cont" style="display:none">
-        <div class="div-deco mt2">the sixth seal is broken</div>
-        <button class="btn btn-blue w100 btn-icon" onclick="goFinale()"><span>✦</span><span>Unseal the Final Treasures</span><span>✦</span></button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ════════════ SCREEN 7 — THE TREASURES UNSEALED ════════════ -->
-<div id="s7" class="scr">
   <div class="card pop-card tc">
     <div class="img-banner">
-      <img src="images/banner-ch3.png" alt="" loading="lazy" />
+      <img src="images/banner-ch3.png" alt="" />
       <div class="grad"></div>
       <div class="banner-cap">THE TREASURES UNSEALED</div>
     </div>
     <div class="card-body">
-      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+      <div class="dots"><div class="dot done"></div><div class="dot done"></div><div class="dot cur"></div></div>
       <p class="t-glyph mb2" style="color:var(--orange)">★ &nbsp; THE FABLE IS TOLD &nbsp; ★</p>
-      <h1 class="t-h1 mb2">Six Treasures, Unsealed</h1>
-      <p class="t-body mb1">You walked all six chapters of the Weaver. The seals are broken — these scrolls are yours to keep. Tap any to view full-size, or download.</p>
+      <h1 class="t-h1 mb2">Three Treasures, Unsealed</h1>
+      <p class="t-body mb1">You walked both trials of the Weaver. The seals are broken — these scrolls are yours to keep. Tap any to view full-size, or download.</p>
 
       <div class="gallery">
         <div class="reward show" style="margin:0">
-          <img src="images/treasure1-features.png" alt="" loading="lazy" onclick="openLB('images/treasure1-features.png')" />
+          <img src="images/treasure1-features.png" alt="" onclick="openLB('images/treasure1-features.png')" />
           <div class="reward-foot">
             <span class="reward-name">🗺️ The Cartographer’s Map — 10 Key Features</span>
             <button class="reward-dl" onclick="dlImg('images/treasure1-features.png','claude5-10-key-features.png')">⬇ Download</button>
           </div>
         </div>
         <div class="reward show" style="margin:0">
-          <img src="images/treasure2-comparison.png" alt="" loading="lazy" onclick="openLB('images/treasure2-comparison.png')" />
+          <img src="images/treasure2-comparison.png" alt="" onclick="openLB('images/treasure2-comparison.png')" />
           <div class="reward-foot">
             <span class="reward-name">⚖️ The Mirror of Twins — Fable vs Mythos</span>
             <button class="reward-dl" onclick="dlImg('images/treasure2-comparison.png','fable-vs-mythos-breakdown.png')">⬇ Download</button>
           </div>
         </div>
         <div class="reward show" style="margin:0">
-          <img src="images/treasure3-playbook.png" alt="" loading="lazy" onclick="openLB('images/treasure3-playbook.png')" />
+          <img src="images/treasure3-playbook.png" alt="" onclick="openLB('images/treasure3-playbook.png')" />
           <div class="reward-foot">
             <span class="reward-name">📖 The Builder’s Playbook — Use Cases</span>
             <button class="reward-dl" onclick="dlImg('images/treasure3-playbook.png','fable-use-case-playbook.png')">⬇ Download</button>
-          </div>
-        </div>
-        <div class="reward show" style="margin:0">
-          <img src="images/treasure4-forge.png" alt="" loading="lazy" onclick="openLB('images/treasure4-forge.png')" />
-          <div class="reward-foot">
-            <span class="reward-name">🔨 The Smith’s Forge — Software Engineering</span>
-            <button class="reward-dl" onclick="dlImg('images/treasure4-forge.png','fable-software-engineering.png')">⬇ Download</button>
-          </div>
-        </div>
-        <div class="reward show" style="margin:0">
-          <img src="images/treasure5-vision.png" alt="" loading="lazy" onclick="openLB('images/treasure5-vision.png')" />
-          <div class="reward-foot">
-            <span class="reward-name">👁️ The Seer’s Lens — Vision Capabilities</span>
-            <button class="reward-dl" onclick="dlImg('images/treasure5-vision.png','fable-vision-capabilities.png')">⬇ Download</button>
-          </div>
-        </div>
-        <div class="reward show" style="margin:0">
-          <img src="images/treasure6-memory.png" alt="" loading="lazy" onclick="openLB('images/treasure6-memory.png')" />
-          <div class="reward-foot">
-            <span class="reward-name">🧿 The Infinite Scroll — Long-Context Memory</span>
-            <button class="reward-dl" onclick="dlImg('images/treasure6-memory.png','fable-long-context-memory.png')">⬇ Download</button>
           </div>
         </div>
       </div>
@@ -828,7 +508,7 @@
 
 // ── STATE ──
 let _model='claude-fable-5';
-let _totalIn=0,_totalOut=0,_asked=false,_veilTouched=false,_asked4=false,_asked5=false,_asked6=false;
+let _totalIn=0,_totalOut=0,_asked=false,_veilTouched=false;
 const IN_PPT=10/1_000_000, OUT_PPT=50/1_000_000;
 
 const $=id=>document.getElementById(id);
@@ -842,15 +522,11 @@ function showScreen(id){document.querySelectorAll('.scr').forEach(s=>s.classList
     for(let i=0;i<48;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*3+1,
       vx:(Math.random()-.5)*.3,vy:-(Math.random()*.3+.1),a:Math.random()*6.28,as:Math.random()*.015+.003,
       col:Math.random()>.5?'#d97757':'#6a9bcc'});}
-  let last=performance.now();
-  function frame(now){requestAnimationFrame(frame);
-    if(now-last<33)return;last=now; // ~30fps, minimal work
-    cx.clearRect(0,0,W,H);pts.forEach(p=>{p.a+=p.as;p.x+=p.vx;p.y+=p.vy;
-      if(p.y<-8){p.y=H+8;p.x=Math.random()*W;}if(p.x<-8)p.x=W+8;if(p.x>W+8)p.x=-8;
-      const al=.12+.18*Math.abs(Math.sin(p.a));
-      cx.globalAlpha=al;cx.fillStyle=p.col;cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);cx.fill();});
-    cx.globalAlpha=1;}
-  resize();requestAnimationFrame(frame);addEventListener('resize',resize);
+  function frame(){cx.clearRect(0,0,W,H);pts.forEach(p=>{p.a+=p.as;p.x+=p.vx;p.y+=p.vy;
+    if(p.y<-8){p.y=H+8;p.x=Math.random()*W;}if(p.x<-8)p.x=W+8;if(p.x>W+8)p.x=-8;
+    cx.globalAlpha=.12+.18*Math.abs(Math.sin(p.a));cx.beginPath();cx.arc(p.x,p.y,p.r,0,6.28);
+    cx.fillStyle=p.col;cx.fill();cx.globalAlpha=1;});requestAnimationFrame(frame);}
+  resize();frame();addEventListener('resize',resize);
 })();
 
 // ── BUTTERFLIES ──
@@ -874,45 +550,41 @@ $('lb').addEventListener('click',e=>{if(e.target.id==='lb')closeLB();});
 function dlImg(src,name){const a=document.createElement('a');a.href=src;a.download=name;a.click();}
 
 // ── NAV ──
-function goStage1(){px(17);showScreen('s1');}
-function goStage2(){px(33);showScreen('s2');setVeil('fable');}
-function goStage3(){px(50);showScreen('s3');}
-function goStage4(){px(67);showScreen('s4');}
-function goStage5(){px(83);showScreen('s5');}
-function goStage6(){px(92);showScreen('s6');}
-function goFinale(){px(100);showScreen('s7');confetti();for(let i=0;i<5;i++)setTimeout(spawnBf,i*400);}
+function goStage1(){px(20);showScreen('s1');}
+function goStage2(){px(62);showScreen('s2');setVeil('fable');}
+function goFinale(){px(100);showScreen('s3');confetti();for(let i=0;i<5;i++)setTimeout(spawnBf,i*400);}
 
-// ── CHAPTER I: LIVE WEAVER ──
-function setP(id,el){$(id).value=el.textContent;}
+// ── TRIAL I: LIVE WEAVER ──
+function setP(el){$('s1in').value=el.textContent;}
 
-const GEN={};
-function startGen(st,fill,msg,pctEl,msgText){
-  const g=$(st);g.classList.add('on');
-  let pct=0;$(fill).style.width='0%';$(pctEl).textContent='0%';
-  $(msg).textContent=msgText;
-  const key=st+fill;GEN[key]=setInterval(()=>{
-    pct+=Math.max(0.5,(93-pct)*0.07);
+let _genIv=null;
+function startGen(){
+  const g=$('s1gen');g.classList.add('on');
+  let pct=0;$('genfill').style.width='0%';$('genpct').textContent='0%';
+  $('genmsg').textContent='The Weaver is weaving your answer…';
+  _genIv=setInterval(()=>{
+    pct+=Math.max(0.5,(93-pct)*0.07);   // ease toward ~93%
     if(pct>93)pct=93;
-    $(fill).style.width=pct.toFixed(0)+'%';
-    $(pctEl).textContent=pct.toFixed(0)+'%';
-  },170);return key;
+    $('genfill').style.width=pct.toFixed(0)+'%';
+    $('genpct').textContent=pct.toFixed(0)+'%';
+  },170);
 }
-function stopGen(key,st,fill,msg,pctEl,done){
-  if(GEN[key]){clearInterval(GEN[key]);delete GEN[key];}
+function stopGen(done){
+  if(_genIv){clearInterval(_genIv);_genIv=null;}
   if(done){
-    $(fill).style.width='100%';$(pctEl).textContent='100%';$(msg).textContent='The tale is told ✦';
-    setTimeout(()=>$(st).classList.remove('on'),420);
-  }else $(st).classList.remove('on');
+    $('genfill').style.width='100%';$('genpct').textContent='100%';$('genmsg').textContent='The tale is told ✦';
+    setTimeout(()=>$('s1gen').classList.remove('on'),420);
+  }else $('s1gen').classList.remove('on');
 }
 
 function extractReply(data){
   const msg=data?.choices?.[0]?.message||{};
   let c=msg.content;
   if(Array.isArray(c))c=c.map(x=>typeof x==='string'?x:(x?.text||x?.content||'')).join('');
-  return ((c||msg.reasoning_content||'')+'').trim();
+  return ((c||msg.reasoning_content||'')+'').trim();   // '' when the safeguard returns nothing
 }
 const SAFEGUARD_MSG =
-  "✦ The Weaver drew its veil.\n\nYour question brushed against cybersecurity, biology, or chemistry — so Fable handed it to its safeguard (Claude Opus 4.8) rather than answering directly. You just witnessed Chapter II live: Fable keeps the walls up for everyone, while only trusted partners get Mythos with the walls down.\n\nAsk something else — about Fable itself, code, ideas, anything — and watch it answer freely.";
+  "✦ The Weaver drew its veil.\n\nYour question brushed against cybersecurity, biology, or chemistry — so Fable handed it to its safeguard (Claude Opus 4.8) rather than answering directly. You just witnessed Trial II live: Fable keeps the walls up for everyone, while only trusted partners get Mythos with the walls down.\n\nAsk something else — about Fable itself, code, ideas, anything — and watch it answer freely.";
 
 async function askWeaver(){
   const txt=$('s1in').value.trim();
@@ -921,7 +593,7 @@ async function askWeaver(){
   err.classList.remove('on');
   btn.disabled=true;btn.innerHTML='<span class="spin"></span> &nbsp;Weaving…';
   out.style.display='none';out.textContent='';
-  const key=startGen('s1gen','genfill','genmsg','genpct','The Weaver is weaving your answer…');
+  startGen();
   try{
     const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({prompt:txt,model:_model})});
@@ -929,132 +601,25 @@ async function askWeaver(){
     const data=await res.json();
     const reply=extractReply(data)||SAFEGUARD_MSG;
     if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
-    stopGen(key,'s1gen','genfill','genmsg','genpct',true);
-    await new Promise(r=>setTimeout(r,440));
+    stopGen(true);
+    await new Promise(r=>setTimeout(r,440));   // let the progress bar finish to 100%
     out.className='chat-box';out.style.display='block';
     out.innerHTML=mdToHtml(reply);
-    out.style.animation='none';void out.offsetHeight;out.style.animation='';
+    out.style.animation='none';void out.offsetHeight;out.style.animation='';  // replay fade-in
     if(!_asked){
       _asked=true;
       $('reward1').classList.add('show');
       openSeal('seal0');
       $('s1cont').style.display='block';
       $('s1hint').textContent='The first seal is broken ✦';
+      px(45);
     }
   }catch(e){
-    stopGen(key,'s1gen','genfill','genmsg','genpct',false);
+    stopGen(false);
     out.style.display='none';out.className='chat-box';
     err.textContent='⚠ '+(e.message||'Connection to the Weaver failed. Try again.');err.classList.add('on');
   }finally{
     btn.disabled=false;btn.innerHTML='<span>✦</span><span>'+(_asked?'Ask Again':'Summon the Weaver')+'</span>';
-  }
-}
-
-async function askForge(){
-  const txt=$('s4in').value.trim();
-  const err=$('s4err'),btn=$('s4ask'),out=$('s4out');
-  if(!txt){err.textContent='⚠ Give the Forge a task first.';err.classList.add('on');return;}
-  err.classList.remove('on');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span> &nbsp;Forging…';
-  out.style.display='none';out.textContent='';
-  const key=startGen('s4gen','genfill4','genmsg4','genpct4','The Forge is hammering your code…');
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt:txt,model:_model})});
-    if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Forge could not be reached (error '+res.status+').');}
-    const data=await res.json();
-    const reply=extractReply(data)||SAFEGUARD_MSG;
-    if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
-    stopGen(key,'s4gen','genfill4','genmsg4','genpct4',true);
-    await new Promise(r=>setTimeout(r,440));
-    out.className='chat-box';out.style.display='block';
-    out.innerHTML=mdToHtml(reply);
-    out.style.animation='none';void out.offsetHeight;out.style.animation='';
-    if(!_asked4){
-      _asked4=true;
-      $('reward4').classList.add('show');
-      openSeal('seal3');
-      $('s4cont').style.display='block';
-      $('s4hint').textContent='The fourth seal is broken ✦';
-    }
-  }catch(e){
-    stopGen(key,'s4gen','genfill4','genmsg4','genpct4',false);
-    out.style.display='none';out.className='chat-box';
-    err.textContent='⚠ '+(e.message||'Connection to the Forge failed. Try again.');err.classList.add('on');
-  }finally{
-    btn.disabled=false;btn.innerHTML='<span>✦</span><span>'+(_asked4?'Ask Again':'Strike the Forge')+'</span>';
-  }
-}
-
-async function askVision(){
-  const txt=$('s5in').value.trim();
-  const err=$('s5err'),btn=$('s5ask'),out=$('s5out');
-  if(!txt){err.textContent='⚠ Show the Lens something to consider.';err.classList.add('on');return;}
-  err.classList.remove('on');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span> &nbsp;Focusing…';
-  out.style.display='none';out.textContent='';
-  const key=startGen('s5gen','genfill5','genmsg5','genpct5','The Lens is focusing…');
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt:txt,model:_model})});
-    if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Lens could not be reached (error '+res.status+').');}
-    const data=await res.json();
-    const reply=extractReply(data)||SAFEGUARD_MSG;
-    if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
-    stopGen(key,'s5gen','genfill5','genmsg5','genpct5',true);
-    await new Promise(r=>setTimeout(r,440));
-    out.className='chat-box';out.style.display='block';
-    out.innerHTML=mdToHtml(reply);
-    out.style.animation='none';void out.offsetHeight;out.style.animation='';
-    if(!_asked5){
-      _asked5=true;
-      $('reward5').classList.add('show');
-      openSeal('seal4');
-      $('s5cont').style.display='block';
-      $('s5hint').textContent='The fifth seal is broken ✦';
-    }
-  }catch(e){
-    stopGen(key,'s5gen','genfill5','genmsg5','genpct5',false);
-    out.style.display='none';out.className='chat-box';
-    err.textContent='⚠ '+(e.message||'Connection to the Lens failed. Try again.');err.classList.add('on');
-  }finally{
-    btn.disabled=false;btn.innerHTML='<span>✦</span><span>'+(_asked5?'Ask Again':'Peer Through the Lens')+'</span>';
-  }
-}
-
-async function askMemory(){
-  const txt=$('s6in').value.trim();
-  const err=$('s6err'),btn=$('s6ask'),out=$('s6out');
-  if(!txt){err.textContent='⚠ Give the Memory something to hold.';err.classList.add('on');return;}
-  err.classList.remove('on');
-  btn.disabled=true;btn.innerHTML='<span class="spin"></span> &nbsp;Recalling…';
-  out.style.display='none';out.textContent='';
-  const key=startGen('s6gen','genfill6','genmsg6','genpct6','The Memory is reaching back…');
-  try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({prompt:txt,model:_model})});
-    if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Memory could not be reached (error '+res.status+').');}
-    const data=await res.json();
-    const reply=extractReply(data)||SAFEGUARD_MSG;
-    if(data.usage){_totalIn+=data.usage.prompt_tokens||0;_totalOut+=data.usage.completion_tokens||0;updateCost();}
-    stopGen(key,'s6gen','genfill6','genmsg6','genpct6',true);
-    await new Promise(r=>setTimeout(r,440));
-    out.className='chat-box';out.style.display='block';
-    out.innerHTML=mdToHtml(reply);
-    out.style.animation='none';void out.offsetHeight;out.style.animation='';
-    if(!_asked6){
-      _asked6=true;
-      $('reward6').classList.add('show');
-      openSeal('seal5');
-      $('s6cont').style.display='block';
-      $('s6hint').textContent='The sixth seal is broken ✦';
-    }
-  }catch(e){
-    stopGen(key,'s6gen','genfill6','genmsg6','genpct6',false);
-    out.style.display='none';out.className='chat-box';
-    err.textContent='⚠ '+(e.message||'Connection to the Memory failed. Try again.');err.classList.add('on');
-  }finally{
-    btn.disabled=false;btn.innerHTML='<span>✦</span><span>'+(_asked6?'Ask Again':'Consult the Memory')+'</span>';
   }
 }
 
@@ -1065,17 +630,7 @@ function updateCost(){
   $('cusd').textContent='$'+c.toFixed(6);
   $('costp').style.display='flex';
 }
-
-// ── CHAPTER III PLAYBOOK BREAK ──
-function breakSeal3(){
-  $('reward3').classList.add('show');
-  openSeal('seal2');
-  $('s3break').style.display='none';
-  $('s3cont').style.display='block';
-  $('s3hint').textContent='The third seal is broken ✦';
-}
-
-// ── MINIMAL MARKDOWN → HTML ──
+// ── MINIMAL MARKDOWN → HTML (bold, italic, code, headings, lists, fenced code) ──
 function mdEsc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function mdInline(s){
   return s
@@ -1120,7 +675,7 @@ function mdToHtml(src){
 function openSeal(id){const row=$(id);if(!row)return;row.classList.add('open');
   row.querySelector('.seal-ico').textContent='✓';row.querySelector('.seal-state').textContent='Unsealed';}
 
-// ── CHAPTER II: VEIL ──
+// ── TRIAL II: VEIL ──
 const VEIL={
   fable:{cls:'fable',title:'🦋 Fable — the gentle mask',lines:[
     'Open to <b>everyone</b> — the general public, on every platform',
@@ -1146,36 +701,23 @@ function setVeil(which){
     _veilTouched=true;
     openSeal('seal1');openSeal('seal2');
     $('s2cont').style.display='block';
-    $('s2hint').textContent='Both seals are ready — descend to the next chapter ✦';
+    $('s2hint').textContent='Both seals are ready — descend to your treasures ✦';
   }
 }
 
 // ── RESTART ──
 function restart(){
-  _totalIn=0;_totalOut=0;_asked=false;_veilTouched=false;_asked4=false;_asked5=false;_asked6=false;
-  Object.keys(GEN).forEach(k=>{clearInterval(GEN[k]);delete GEN[k];});
-  ['s1gen','s4gen','s5gen','s6gen'].forEach(id=>$(id).classList.remove('on'));
+  _totalIn=0;_totalOut=0;_asked=false;_veilTouched=false;
+  if(_genIv){clearInterval(_genIv);_genIv=null;}$('s1gen').classList.remove('on');
   $('s1in').value='';$('s1out').style.display='none';$('s1out').textContent='';
-  $('s4in').value='';$('s4out').style.display='none';$('s4out').textContent='';
-  $('s5in').value='';$('s5out').style.display='none';$('s5out').textContent='';
-  $('s6in').value='';$('s6out').style.display='none';$('s6out').textContent='';
-  $('s1err').classList.remove('on');$('s4err').classList.remove('on');$('s5err').classList.remove('on');$('s6err').classList.remove('on');
-  $('s1cont').style.display='none';$('s4cont').style.display='none';$('s5cont').style.display='none';$('s6cont').style.display='none';
-  $('s3cont').style.display='none';$('s3break').style.display='';
-  ['reward1','reward3','reward4','reward5','reward6'].forEach(id=>$(id).classList.remove('show'));
+  $('s1err').classList.remove('on');$('s1cont').style.display='none';
+  $('reward1').classList.remove('show');
   $('costp').style.display='none';$('cin').textContent='0';$('cout').textContent='0';$('cusd').textContent='$0.000000';
-  const resetBtn=(id,label)=>{const b=$(id);b.disabled=false;b.innerHTML='<span>✦</span><span>'+label+'</span>';};
-  resetBtn('s1ask','Summon the Weaver');resetBtn('s4ask','Strike the Forge');resetBtn('s5ask','Peer Through the Lens');resetBtn('s6ask','Consult the Memory');
+  $('s1ask').disabled=false;$('s1ask').innerHTML='<span>✦</span><span>Summon the Weaver</span>';
   $('s1hint').textContent='Ask once to break the first seal';
-  $('s2hint').textContent='Turn the mask to continue…';
-  $('s3hint').textContent='Claim the treasure to continue…';
-  $('s4hint').textContent='Ask once to break the fourth seal';
-  $('s5hint').textContent='Ask once to break the fifth seal';
-  $('s6hint').textContent='Ask once to break the sixth seal';
-  const icons=['✦','⚖','📖','🔨','👁','🧿'];
-  ['seal0','seal1','seal2','seal3','seal4','seal5'].forEach((id,i)=>{const r=$(id);r.classList.remove('open');
-    r.querySelector('.seal-ico').textContent=icons[i];r.querySelector('.seal-state').textContent='Sealed';});
-  setVeil('fable');
+  $('s2cont').style.display='none';$('s2hint').textContent='Turn the mask to continue…';
+  ['seal0','seal1','seal2'].forEach((id,i)=>{const r=$(id);r.classList.remove('open');
+    r.querySelector('.seal-ico').textContent=['✦','⚖','📖'][i];r.querySelector('.seal-state').textContent='Sealed';});
   px(0);showScreen('s0');
 }
 </script>
