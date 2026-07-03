@@ -33,7 +33,7 @@
     #prog{position:fixed;top:0;left:0;width:100%;height:3px;z-index:1000;background:var(--gray-l);}
     #pf{height:100%;width:0%;background:linear-gradient(90deg,var(--orange),var(--blue));transition:width .8s ease;will-change:width;}
 
-    .scr{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;content-visibility:auto;}
+    .scr{position:relative;z-index:1;min-height:100vh;display:none;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1rem;content-visibility:auto;padding-bottom:4rem;}
     .scr.on{display:flex;content-visibility:visible;}
 
     .card{width:100%;max-width:680px;background:var(--white);border-radius:var(--radius);
@@ -247,6 +247,22 @@
     .mt1{margin-top:.5rem}.mt2{margin-top:1rem}.mt3{margin-top:1.5rem}
     .mb1{margin-bottom:.5rem}.mb2{margin-bottom:1rem}
     .pop-card{animation:pop .5s ease forwards;}
+
+    /* ── NAVIGATION BAR ── */
+    .nav-bar{position:fixed;bottom:0;left:0;right:0;z-index:900;display:none;align-items:center;justify-content:space-between;padding:.6rem 1rem;background:rgba(250,249,245,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-top:1px solid var(--gray-l);box-shadow:0 -2px 12px var(--shadow);}
+    .nav-bar.show{display:flex;}
+    .nav-btn{cursor:pointer;border:none;border-radius:var(--radius-sm);font-weight:600;transition:all .22s ease;font-family:var(--ff-h);display:flex;align-items:center;gap:.45rem;padding:.55rem 1.1rem;font-size:.78rem;background:transparent;color:var(--gray-m);}
+    .nav-btn:hover:not(:disabled){color:var(--dark);}
+    .nav-btn:disabled{opacity:.3;cursor:not-allowed;}
+    .nav-btn .arrow{font-size:1rem;line-height:1;}
+    .nav-btn.active{background:var(--orange);color:#fff;box-shadow:0 2px 8px rgba(217,119,87,.35);}
+    .nav-btn.active:hover{background:var(--orange-d);}
+    .nav-chapter{font-family:var(--ff-m);font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-m);text-align:center;}
+    .nav-chapter strong{font-family:var(--ff-h);font-weight:700;color:var(--dark);font-size:.72rem;letter-spacing:0;text-transform:none;}
+    .nav-dots{display:flex;gap:.3rem;justify-content:center;}
+    .nav-dot{width:6px;height:6px;border-radius:50%;background:var(--gray-l);transition:all .3s;}
+    .nav-dot.visited{background:var(--green);}
+    .nav-dot.current{background:var(--orange);transform:scale(1.4);}
   </style>
 </head>
 <body>
@@ -256,6 +272,15 @@
 <div id="bflies"></div>
 
 <div id="lb"><button id="lb-close" onclick="closeLB()">✕</button><img id="lb-img" alt="" /></div>
+
+<div id="navbar" class="nav-bar">
+  <button class="nav-btn" id="navBack" onclick="navPrev()" disabled><span class="arrow">←</span><span>Back</span></button>
+  <div style="display:flex;flex-direction:column;align-items:center;gap:.25rem;">
+    <div class="nav-dots" id="navDots"></div>
+    <div class="nav-chapter"><span id="navLabel"></span></div>
+  </div>
+  <button class="nav-btn" id="navNext" onclick="navNext()"><span>Next</span><span class="arrow">→</span></button>
+</div>
 
 <!-- ════════════ SCREEN 0 — THE THRESHOLD ════════════ -->
 <div id="s0" class="scr on">
@@ -833,7 +858,7 @@ const IN_PPT=10/1_000_000, OUT_PPT=50/1_000_000;
 
 const $=id=>document.getElementById(id);
 const px=p=>{$('pf').style.width=p+'%';};
-function showScreen(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);}
+function showScreen(id){document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));$(id).classList.add('on');window.scrollTo(0,0);updateNav(id);}
 
 // ── CANVAS PARTICLES ──
 (function(){
@@ -1151,6 +1176,30 @@ function setVeil(which){
 }
 
 // ── RESTART ──
+// ── NAVIGATION ──
+const STAGES=['s0','s1','s2','s3','s4','s5','s6','s7'];
+const STAGE_NAMES=['Introduction','Chapter I','Chapter II','Chapter III','Chapter IV','Chapter V','Chapter VI','The Finale'];
+const STAGE_FUNCS=[null,'goStage1','goStage2','goStage3','goStage4','goStage5','goStage6','goFinale'];
+function updateNav(id){
+  const idx=STAGES.indexOf(id);
+  const nb=$('navbar');
+  if(idx<=0||idx>=STAGES.length-1){nb.classList.remove('show');return;}
+  nb.classList.add('show');
+  $('navBack').disabled=idx<=0;
+  $('navNext').disabled=idx>=STAGES.length-1;
+  $('navLabel').innerHTML='<strong>'+STAGE_NAMES[idx]+'</strong>';
+  // update dots
+  const dots=$('navDots');
+  dots.innerHTML='';
+  for(let i=1;i<STAGES.length-1;i++){
+    const d=document.createElement('div');
+    d.className='nav-dot'+(i<idx?' visited':'')+(i===idx?' current':'');
+    dots.appendChild(d);
+  }
+}
+function navNext(){const idx=STAGES.indexOf(document.querySelector('.scr.on')?.id);if(idx>=0&&idx<STAGES.length-1){window[STAGE_FUNCS[idx+1]]();}}
+function navPrev(){const idx=STAGES.indexOf(document.querySelector('.scr.on')?.id);if(idx>0){window[STAGE_FUNCS[idx-1]]();}}
+
 function restart(){
   _totalIn=0;_totalOut=0;_asked=false;_veilTouched=false;_asked4=false;_asked5=false;_asked6=false;
   Object.keys(GEN).forEach(k=>{clearInterval(GEN[k]);delete GEN[k];});
@@ -1176,6 +1225,7 @@ function restart(){
   ['seal0','seal1','seal2','seal3','seal4','seal5'].forEach((id,i)=>{const r=$(id);r.classList.remove('open');
     r.querySelector('.seal-ico').textContent=icons[i];r.querySelector('.seal-state').textContent='Sealed';});
   setVeil('fable');
+  $('navbar').classList.remove('show');
   px(0);showScreen('s0');
 }
 </script>
