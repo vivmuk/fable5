@@ -13,7 +13,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
-const VENICE_KEY = process.env.VENICE_API_KEY;
+const ENV_VENICE_KEY = process.env.VENICE_API_KEY;
+// BYOK: per-request header wins over env
+const veniceKey = (req) => (req && req.headers && (req.headers['x-venice-key'] || req.headers['X-Venice-Key'])) || ENV_VENICE_KEY;
 const VENICE_URL = 'https://api.venice.ai/api/v1/chat/completions';
 
 // Only these models may be requested through the proxy.
@@ -57,6 +59,7 @@ app.use('/api/', limiter);
 
 // ── ORACLE CHAT PROXY ──────────────────────────────────────────
 app.post('/api/chat', async (req, res) => {
+  const VENICE_KEY = veniceKey(req);
   if (!VENICE_KEY) {
     return res.status(500).json({ error: { message: 'Server is not configured (missing VENICE_API_KEY).' } });
   }
@@ -71,7 +74,7 @@ app.post('/api/chat', async (req, res) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${VENICE_KEY}`
+        'Authorization': `Bearer ${veniceKey(req)}`
       },
       body: JSON.stringify({
         model: useModel,

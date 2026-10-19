@@ -264,6 +264,7 @@
     .nav-dot.visited{background:var(--green);}
     .nav-dot.current{background:var(--orange);transform:scale(1.4);}
   </style>
+  <script src="byok.js"></script>
 </head>
 <body>
 
@@ -948,7 +949,7 @@ async function askWeaver(){
   out.style.display='none';out.textContent='';
   const key=startGen('s1gen','genfill','genmsg','genpct','The Weaver is weaving your answer…');
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','x-venice-key':(window.getVeniceKey?(window.getVeniceKey()||''):'')},
       body:JSON.stringify({prompt:txt,model:_model})});
     if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Weaver could not be reached (error '+res.status+').');}
     const data=await res.json();
@@ -984,7 +985,7 @@ async function askForge(){
   out.style.display='none';out.textContent='';
   const key=startGen('s4gen','genfill4','genmsg4','genpct4','The Forge is hammering your code…');
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','x-venice-key':(window.getVeniceKey?(window.getVeniceKey()||''):'')},
       body:JSON.stringify({prompt:txt,model:_model})});
     if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Forge could not be reached (error '+res.status+').');}
     const data=await res.json();
@@ -1020,7 +1021,7 @@ async function askVision(){
   out.style.display='none';out.textContent='';
   const key=startGen('s5gen','genfill5','genmsg5','genpct5','The Lens is focusing…');
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','x-venice-key':(window.getVeniceKey?(window.getVeniceKey()||''):'')},
       body:JSON.stringify({prompt:txt,model:_model})});
     if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Lens could not be reached (error '+res.status+').');}
     const data=await res.json();
@@ -1056,7 +1057,7 @@ async function askMemory(){
   out.style.display='none';out.textContent='';
   const key=startGen('s6gen','genfill6','genmsg6','genpct6','The Memory is reaching back…');
   try{
-    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json','x-venice-key':(window.getVeniceKey?(window.getVeniceKey()||''):'')},
       body:JSON.stringify({prompt:txt,model:_model})});
     if(!res.ok){const b=await res.json().catch(()=>({}));throw new Error(b?.error?.message||'The Memory could not be reached (error '+res.status+').');}
     const data=await res.json();
